@@ -1,0 +1,5 @@
+File "main.ts" {
+  Highlight 3
+  Highlight 2:5-2:15
+  Highlight 1:1-3:10
+}
