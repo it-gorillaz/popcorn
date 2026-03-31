@@ -1,0 +1,149 @@
+# ---------------------------------------------------------------------------
+# Global configuration
+# ---------------------------------------------------------------------------
+
+Config {
+  TypingMode Human
+  TypingSpeed 80            # words per minute
+  TypingErrorChance 0.2
+}
+
+Editor {
+  "language": "typescript",
+  "theme": "vs-dark",
+  "fontSize": 16,
+  "fontFamily": "JetBrains Mono",
+  "minimap": { "enabled": false },
+  "lineNumbers": "on"
+}
+
+Output {
+  Width 1920
+  Height 1080
+  Fps 30
+  Format "mp4"              # or "gif"
+}
+
+# ---------------------------------------------------------------------------
+# Scene starts here
+# ---------------------------------------------------------------------------
+
+Sleep 1s
+
+Annotate "Let's build a simple user service"
+
+Sleep 1.5s
+
+# Open the first file and start typing
+File "user.ts" {
+  Type "export interface User {"
+  Enter
+  Tab
+  Type "id: number;"
+  Enter
+  Tab
+  Type "name: string;"
+  Enter
+  Tab
+  Type "email: string;"
+  Enter
+  Type "}"
+  Sleep 1s
+}
+
+Sleep 0.5s
+
+# Open a second file alongside the first
+Split Right
+
+File "user-service.ts" {
+  Type "import { User } from './user';"
+  Enter
+  Enter
+  Type "export class UserService {"
+  Enter
+  Tab
+  Type "private users: User[] = [];"
+  Enter
+  Enter
+  Tab
+  Type "add(user: Usr): void {"   # intentional typo — Human mode will fix it
+  Sleep 0.3s
+  Backspace 3
+  Type "User): void {"
+  Enter
+  Tab
+  Tab
+  Type "this.users.push(user);"
+  Enter
+  Tab
+  Type "}"
+  Enter
+  Enter
+  Tab
+  Type "findById(id: number): User | undefined {"
+  Enter
+  Tab
+  Tab
+  Type "return this.users.find(u => u.id === id);"
+  Enter
+  Tab
+  Type "}"
+  Enter
+  Type "}"
+  Sleep 1s
+
+  Annotate "Let's highlight the find method"
+  Sleep 0.5s
+
+  Scroll 8
+  Sleep 0.3s
+
+  Highlight 8:3-8:20       # line 8, col 3 to col 20
+  Sleep 1.5s
+}
+
+Unsplit
+
+Sleep 0.5s
+
+# Switch back to user.ts and add a method
+Focus "user.ts"
+
+Annotate "Now let's add a helper to user.ts"
+
+Sleep 1s
+
+File "user.ts" {
+  Scroll 1
+  MoveTo 1                  # move cursor to line 1
+  Enter
+  MoveTo 1
+  Paste "import { randomUUID } from 'crypto';"   # no typing animation
+  Enter
+  Enter
+  MoveTo 6
+  Enter
+  Tab
+  Type "export function createUser(name: string, email: string): User {"
+  Enter
+  Tab
+  Tab
+  Type "return { id: randomUUID(), name, email };"
+  Enter
+  Tab
+  Type "}"
+  Sleep 1.5s
+
+  Select 7:1-9:1            # select the new function block
+  Sleep 1s
+
+  Annotate "That's our factory function"
+  Sleep 2s
+}
+
+Sleep 1s
+
+Annotate "Done!"
+
+Sleep 2s

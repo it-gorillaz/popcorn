@@ -1,0 +1,5 @@
+Config {
+  TypingMode Human
+  TypingSpeed 80
+  TypingErrorChance 0.2
+}

@@ -1,0 +1,31 @@
+{
+  "name": "popcorn",
+  "version": "0.1.0",
+  "description": "Script code, render cinema, grab your popcorn.",
+  "type": "module",
+  "bin": {
+    "popcorn": "./bin/popcorn.js"
+  },
+  "scripts": {
+    "build:parser": "peggy --format es src/parser/grammar.pegjs -o src/parser/parser.js",
+    "prepare": "npm run build:parser",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "eslint src",
+    "lint:fix": "eslint src --fix",
+    "format": "prettier --write src",
+    "format:check": "prettier --check src"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.1.0",
+    "eslint-config-prettier": "^10.1.8",
+    "globals": "^17.4.0",
+    "peggy": "^5.1.0",
+    "prettier": "^3.8.1",
+    "vitest": "^4.1.2"
+  }
+}
