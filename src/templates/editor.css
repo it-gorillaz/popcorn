@@ -1,0 +1,155 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #1e1e1e;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ------------------------------------------------------------------ */
+/* macOS-style title bar                                               */
+/* ------------------------------------------------------------------ */
+
+#title-bar {
+  flex: 0 0 38px;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  background: var(--titlebar-bg, #2b2b2b);
+  position: relative;
+  user-select: none;
+}
+
+.traffic-lights {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 1;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.dot-close {
+  background: #ff5f57;
+  box-shadow: inset 0 0 0 0.5px #e0443e;
+}
+.dot-minimize {
+  background: #febc2e;
+  box-shadow: inset 0 0 0 0.5px #d6a027;
+}
+.dot-maximize {
+  background: #28c840;
+  box-shadow: inset 0 0 0 0.5px #1aab29;
+}
+
+#window-title {
+  position: absolute;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-family: -apple-system, 'Segoe UI', system-ui, sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--titlebar-fg, #9a9a9a);
+  pointer-events: none;
+}
+
+/* ------------------------------------------------------------------ */
+/* Pane layout                                                         */
+/* ------------------------------------------------------------------ */
+
+#root {
+  flex: 1;
+  display: flex;
+  min-height: 0;
+}
+
+.editor-pane {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.editor-pane + .editor-pane {
+  border-left: 1px solid #1a1a1a;
+}
+
+/* ------------------------------------------------------------------ */
+/* Tab bar                                                             */
+/* ------------------------------------------------------------------ */
+
+.tab-bar {
+  flex: 0 0 35px;
+  display: flex;
+  align-items: stretch;
+  background: var(--tabbar-bg, #2d2d2d);
+  border-bottom: 1px solid #1a1a1a;
+  overflow: hidden;
+}
+
+.tab {
+  display: flex;
+  align-items: center;
+  padding: 0 18px;
+  font-family: -apple-system, 'Segoe UI', system-ui, sans-serif;
+  font-size: 13px;
+  color: var(--tab-inactive-fg, #969696);
+  background: var(--tab-inactive-bg, #2d2d2d);
+  border-right: 1px solid #1a1a1a;
+  white-space: nowrap;
+  cursor: default;
+  user-select: none;
+}
+
+.tab.active {
+  color: var(--tab-active-fg, #cccccc);
+  background: var(--tab-active-bg, #1e1e1e);
+  box-shadow: inset 0 1px 0 0 var(--tab-active-border-top, #007fd4);
+}
+
+/* ------------------------------------------------------------------ */
+/* Editor container                                                    */
+/* ------------------------------------------------------------------ */
+
+.editor-container {
+  flex: 1;
+  min-height: 0;
+}
+
+/* ------------------------------------------------------------------ */
+/* Annotation overlay                                                  */
+/* ------------------------------------------------------------------ */
+
+#annotation-overlay {
+  position: fixed;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.78);
+  color: #fff;
+  font-family: -apple-system, 'Segoe UI', system-ui, sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  padding: 10px 24px;
+  border-radius: 8px;
+  pointer-events: none;
+  white-space: nowrap;
+  display: none;
+  z-index: 200;
+  letter-spacing: 0.01em;
+}

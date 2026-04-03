@@ -6,11 +6,28 @@ export default [
   js.configs.recommended,
   prettier,
   {
+    ignores: ['src/templates/**/*.js'],
     languageOptions: {
       ecmaVersion: 2024,
       sourceType: 'module',
       globals: {
         ...globals.node,
+      },
+    },
+    rules: {
+      'no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+      'no-console': 'off',
+    },
+  },
+  {
+    files: ['src/templates/**/*.js'],
+    languageOptions: {
+      ecmaVersion: 2024,
+      sourceType: 'script',
+      globals: {
+        ...globals.browser,
+        require: 'readonly',
+        monaco: 'readonly',
       },
     },
     rules: {

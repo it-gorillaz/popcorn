@@ -39,6 +39,7 @@ build/Release
 
 # Generated files
 src/parser/parser.js
+src/templates/vendor/
 
 # Dependency directories
 node_modules/
