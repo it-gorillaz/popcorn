@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Popcorn Editor</title>
+    <link rel="stylesheet" href="./vendor/monaco/vs/editor/editor.main.css" />
+    <link rel="stylesheet" href="./editor.css" />
+  </head>
+  <body>
+    <!-- macOS-style title bar -->
+    <div id="title-bar">
+      <div class="traffic-lights">
+        <span class="dot dot-close"></span>
+        <span class="dot dot-minimize"></span>
+        <span class="dot dot-maximize"></span>
+      </div>
+      <div id="window-title"></div>
+    </div>
+
+    <!-- Editor panes -->
+    <div id="root">
+      <div class="editor-pane" id="pane-0">
+        <div class="tab-bar" id="tab-bar-0"></div>
+        <div class="editor-container" id="container-0"></div>
+      </div>
+    </div>
+
+    <div id="annotation-overlay"></div>
+
+    <script src="./vendor/monaco/vs/loader.js"></script>
+    <script src="./editor.js"></script>
+  </body>
+</html>

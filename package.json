@@ -8,7 +8,8 @@
   },
   "scripts": {
     "build:parser": "peggy --format es src/parser/grammar.pegjs -o src/parser/parser.js",
-    "prepare": "npm run build:parser",
+    "build:vendor": "node scripts/build-vendor.js",
+    "prepare": "npm run build:parser && npm run build:vendor",
     "test": "vitest run",
     "test:watch": "vitest",
     "lint": "eslint src",
@@ -27,5 +28,8 @@
     "peggy": "^5.1.0",
     "prettier": "^3.8.1",
     "vitest": "^4.1.2"
+  },
+  "dependencies": {
+    "monaco-editor": "^0.52.2"
   }
 }
