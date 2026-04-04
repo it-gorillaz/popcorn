@@ -1,0 +1,29 @@
+{
+  "type": "Program",
+  "statements": [
+    {
+      "type": "Config",
+      "settings": {
+        "typingMode": "Human",
+        "typingSpeed": 60,
+        "typingErrorChance": 0.1
+      }
+    },
+    {
+      "type": "Editor",
+      "options": {
+        "theme": "vs-dark",
+        "fontSize": 14
+      }
+    },
+    {
+      "type": "Output",
+      "settings": {
+        "width": 1920,
+        "height": 1080,
+        "fps": 60,
+        "format": "mp4"
+      }
+    }
+  ]
+}
