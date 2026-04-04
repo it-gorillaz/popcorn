@@ -1,4 +1,3 @@
-import { readFileSync } from 'fs';
 import { dirname, join } from 'path';
 import { chromium } from 'playwright';
 import { fileURLToPath } from 'url';
@@ -21,8 +20,7 @@ export async function launchBrowser({ width = 1280, height = 720 } = {}) {
 
   page.on('pageerror', (err) => console.error('[browser error]', err.message));
 
-  const html = readFileSync(TEMPLATE_PATH, 'utf8');
-  await page.setContent(html, { waitUntil: 'domcontentloaded' });
+  await page.goto(`file://${TEMPLATE_PATH}`, { waitUntil: 'domcontentloaded' });
 
   await page.waitForFunction('window.__popcornReady === true', {
     timeout: MONACO_READY_TIMEOUT,
