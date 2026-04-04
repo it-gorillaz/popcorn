@@ -1,0 +1,19 @@
+{
+  "type": "Program",
+  "statements": [
+    { "type": "Config", "settings": { "typingMode": "Burst" } },
+    { "type": "Editor", "options": { "theme": "vs-dark" } },
+    { "type": "Annotate", "text": "Hello!" },
+    {
+      "type": "File",
+      "name": "main.ts",
+      "commands": [
+        { "type": "Paste", "text": "const x = 1;" },
+        { "type": "Enter" }
+      ]
+    },
+    { "type": "Split", "direction": "Right" },
+    { "type": "Focus", "name": "main.ts" },
+    { "type": "Unsplit" }
+  ]
+}
