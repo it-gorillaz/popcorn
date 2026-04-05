@@ -114,12 +114,12 @@ FileCommand
   / AnnotateCommand
 
 TypeCommand
-  = "Type" _ text:StringLiteral _ {
+  = "Type" _ text:(MultiLineStringLiteral / StringLiteral) _ {
       return { type: 'Type', text };
     }
 
 PasteCommand
-  = "Paste" _ text:StringLiteral _ {
+  = "Paste" _ text:(MultiLineStringLiteral / StringLiteral) _ {
       return { type: 'Paste', text };
     }
 
@@ -285,8 +285,16 @@ JsonEscapeSequence
     }
 
 // ---------------------------------------------------------------------------
-// DSL string literals (double-quoted)
+// DSL string literals (double-quoted and triple-quoted)
 // ---------------------------------------------------------------------------
+
+MultiLineStringLiteral
+  = '"""' '\n' chars:MultiLineStringChar* '"""' {
+      return chars.join('');
+    }
+
+MultiLineStringChar
+  = !('"""') char:. { return char; }
 
 StringLiteral
   = '"' chars:StringChar* '"' {
