@@ -58,6 +58,41 @@ describe('Config block', () => {
       ],
     });
   });
+
+  it('parses VideoPreset for a landscape preset', () => {
+    expect(parse('Config { VideoPreset YouTube }')).toEqual({
+      type: 'Program',
+      statements: [{ type: 'Config', settings: { videoPreset: 'YouTube' } }],
+    });
+  });
+
+  it('parses VideoPreset for a vertical preset (YouTubeShorts)', () => {
+    expect(parse('Config { VideoPreset YouTubeShorts }')).toEqual({
+      type: 'Program',
+      statements: [{ type: 'Config', settings: { videoPreset: 'YouTubeShorts' } }],
+    });
+  });
+
+  it('parses VideoPreset for InstagramPostPortrait without matching InstagramPost', () => {
+    expect(parse('Config { VideoPreset InstagramPostPortrait }')).toEqual({
+      type: 'Program',
+      statements: [{ type: 'Config', settings: { videoPreset: 'InstagramPostPortrait' } }],
+    });
+  });
+
+  it('parses VideoPreset for FacebookReel without matching Facebook', () => {
+    expect(parse('Config { VideoPreset FacebookReel }')).toEqual({
+      type: 'Program',
+      statements: [{ type: 'Config', settings: { videoPreset: 'FacebookReel' } }],
+    });
+  });
+
+  it('parses VideoPreset combined with an explicit Fps override', () => {
+    expect(parse('Config { VideoPreset TikTok Fps 60 }')).toEqual({
+      type: 'Program',
+      statements: [{ type: 'Config', settings: { videoPreset: 'TikTok', fps: 60 } }],
+    });
+  });
 });
 
 describe('Editor block', () => {

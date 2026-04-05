@@ -41,6 +41,36 @@ describe('extractSettings', () => {
     expect(config).toEqual({ width: 1920, height: 1080, fps: 30 });
   });
 
+  it('VideoPreset applies preset width, height and fps', () => {
+    const stmts = [{ type: 'Config', settings: { videoPreset: 'YouTube' } }];
+    const { config } = extractSettings(stmts);
+    expect(config).toMatchObject({ width: 1920, height: 1080, fps: 30, videoPreset: 'YouTube' });
+  });
+
+  it('VideoPreset vertical preset sets portrait dimensions', () => {
+    const stmts = [{ type: 'Config', settings: { videoPreset: 'TikTok' } }];
+    const { config } = extractSettings(stmts);
+    expect(config).toMatchObject({ width: 1080, height: 1920, fps: 30 });
+  });
+
+  it('explicit Fps overrides VideoPreset fps', () => {
+    const stmts = [{ type: 'Config', settings: { videoPreset: 'YouTubeShorts', fps: 60 } }];
+    const { config } = extractSettings(stmts);
+    expect(config).toMatchObject({ width: 1080, height: 1920, fps: 60 });
+  });
+
+  it('explicit Width overrides VideoPreset width', () => {
+    const stmts = [{ type: 'Config', settings: { videoPreset: 'YouTube', width: 1280 } }];
+    const { config } = extractSettings(stmts);
+    expect(config).toMatchObject({ width: 1280, height: 1080, fps: 30 });
+  });
+
+  it('unknown VideoPreset falls back to hard defaults', () => {
+    const stmts = [{ type: 'Config', settings: { videoPreset: 'UnknownPlatform' } }];
+    const { config } = extractSettings(stmts);
+    expect(config).toMatchObject({ width: 1280, height: 720, fps: 30 });
+  });
+
   it('ignores non-settings statement types', () => {
     const stmts = [{ type: 'Sleep', value: 1, unit: 's' }];
     const { config, editorOptions } = extractSettings(stmts);

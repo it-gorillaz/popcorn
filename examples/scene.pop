@@ -3,13 +3,10 @@
 # ---------------------------------------------------------------------------
 
 Config {
-  TypingMode Human
-  TypingSpeed 120
-  TypingErrorChance 0.05
-  AnnotateFontSize 60
-  Width 1920
-  Height 1080
-  Fps 60
+  TypingMode Machine
+  TypingSpeed 460
+  AnnotateFontSize 16
+  VideoPreset YouTubeShorts
 }
 
 Editor {
