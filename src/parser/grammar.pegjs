@@ -53,6 +53,9 @@ ConfigSetting
   / "AnnotateFontSize" _ size:Integer _ {
       return ['annotateFontSize', size];
     }
+  / "VideoPreset" _ preset:VideoPresetName _ {
+      return ['videoPreset', preset];
+    }
   / "Width" _ value:Integer _ {
       return ['width', value];
     }
@@ -65,6 +68,18 @@ ConfigSetting
 
 TypingMode
   = "Human" / "Machine" / "Burst"
+
+VideoPresetName
+  = "YouTubeShorts"
+  / "YouTube"
+  / "InstagramReel"
+  / "InstagramPostPortrait"
+  / "InstagramPost"
+  / "TikTok"
+  / "Twitter"
+  / "LinkedIn"
+  / "FacebookReel"
+  / "Facebook"
 
 // ---------------------------------------------------------------------------
 // Editor block — free-form JSON passed directly to Monaco editor

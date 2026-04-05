@@ -7,24 +7,35 @@
 
 import { buildTypingStrategy } from './annimations/typing.js';
 import { registry } from './commands/index.js';
+import { VIDEO_PRESETS } from './presets.js';
 
 const SETTINGS_TYPES = new Set(['Config', 'Editor']);
 
 /**
  * Extract and merge Config / Editor settings from top-level AST nodes.
  *
+ * Resolution order: hard-coded defaults → VideoPreset values → explicit settings.
+ * This means a VideoPreset sets sensible dimensions for the target platform, but
+ * any explicit Width / Height / Fps in the Config block takes final priority.
+ *
  * @param {object[]} statements
  * @returns {{ config: object, editorOptions: object }}
  */
 export function extractSettings(statements) {
-  let config = { width: 1280, height: 720, fps: 30 };
+  const hardDefaults = { width: 1280, height: 720, fps: 30 };
+  let rawSettings = {};
   let editorOptions = {};
 
   for (const stmt of statements) {
-    if (stmt.type === 'Config') config = { ...config, ...stmt.settings };
+    if (stmt.type === 'Config') rawSettings = { ...rawSettings, ...stmt.settings };
     if (stmt.type === 'Editor') editorOptions = { ...editorOptions, ...stmt.options };
   }
 
+  const presetValues = rawSettings.videoPreset
+    ? (VIDEO_PRESETS[rawSettings.videoPreset] ?? {})
+    : {};
+
+  const config = { ...hardDefaults, ...presetValues, ...rawSettings };
   return { config, editorOptions };
 }
 
