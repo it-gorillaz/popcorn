@@ -46,6 +46,13 @@ export async function executeAST(ast, page, config, editorOptions) {
     await page.evaluate((opts) => globalThis.__popcorn.applyOptions(opts), editorOptions);
   }
 
+  if (config.annotateFontSize != null) {
+    await page.evaluate(
+      (size) => globalThis.__popcorn.setAnnotateFontSize(size),
+      config.annotateFontSize
+    );
+  }
+
   for (const stmt of ast.statements) {
     if (SETTINGS_TYPES.has(stmt.type)) continue;
 
