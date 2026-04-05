@@ -2,4 +2,7 @@ Config {
   TypingMode Human
   TypingSpeed 80
   TypingErrorChance 0.2
+  Width 1920
+  Height 1080
+  Fps 60
 }

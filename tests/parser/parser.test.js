@@ -26,6 +26,9 @@ describe('Config block', () => {
             typingMode: 'Human',
             typingSpeed: 80,
             typingErrorChance: 0.2,
+            width: 1920,
+            height: 1080,
+            fps: 60,
           },
         },
       ],
@@ -39,6 +42,18 @@ describe('Config block', () => {
         {
           type: 'Config',
           settings: { annotateFontSize: 24 },
+        },
+      ],
+    });
+  });
+
+  it('parses Width, Height and Fps', () => {
+    expect(parse('Config { Width 1920 Height 1080 Fps 60 }')).toEqual({
+      type: 'Program',
+      statements: [
+        {
+          type: 'Config',
+          settings: { width: 1920, height: 1080, fps: 60 },
         },
       ],
     });
@@ -65,24 +80,6 @@ describe('Editor block', () => {
   });
 });
 
-describe('Output block', () => {
-  it('parses width, height, fps and format', () => {
-    expect(parse(fixture('output'))).toEqual({
-      type: 'Program',
-      statements: [
-        {
-          type: 'Output',
-          settings: {
-            width: 1920,
-            height: 1080,
-            fps: 30,
-            format: 'mp4',
-          },
-        },
-      ],
-    });
-  });
-});
 
 // ---------------------------------------------------------------------------
 // Top-level commands
@@ -348,7 +345,6 @@ describe('full scene', () => {
     expect(types).toEqual([
       'Config',
       'Editor',
-      'Output',
       'Sleep',
       'Annotate',
       'Sleep',

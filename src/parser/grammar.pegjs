@@ -24,7 +24,6 @@ Comment
 TopLevelStatement
   = ConfigBlock
   / EditorBlock
-  / OutputBlock
   / FileBlock
   / SplitCommand
   / UnsplitCommand
@@ -54,6 +53,15 @@ ConfigSetting
   / "AnnotateFontSize" _ size:Integer _ {
       return ['annotateFontSize', size];
     }
+  / "Width" _ value:Integer _ {
+      return ['width', value];
+    }
+  / "Height" _ value:Integer _ {
+      return ['height', value];
+    }
+  / "Fps" _ value:Integer _ {
+      return ['fps', value];
+    }
 
 TypingMode
   = "Human" / "Machine" / "Burst"
@@ -65,29 +73,6 @@ TypingMode
 EditorBlock
   = "Editor" _ "{" _ pairs:JsonPair* "}" _ {
       return { type: 'Editor', options: Object.fromEntries(pairs) };
-    }
-
-// ---------------------------------------------------------------------------
-// Output block
-// ---------------------------------------------------------------------------
-
-OutputBlock
-  = "Output" _ "{" _ settings:OutputSetting* "}" _ {
-      return { type: 'Output', settings: Object.fromEntries(settings) };
-    }
-
-OutputSetting
-  = "Width" _ value:Integer _ {
-      return ['width', value];
-    }
-  / "Height" _ value:Integer _ {
-      return ['height', value];
-    }
-  / "Fps" _ value:Integer _ {
-      return ['fps', value];
-    }
-  / "Format" _ value:StringLiteral _ {
-      return ['format', value];
     }
 
 // ---------------------------------------------------------------------------

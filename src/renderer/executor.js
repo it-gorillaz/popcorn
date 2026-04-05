@@ -8,26 +8,24 @@
 import { buildTypingStrategy } from './annimations/typing.js';
 import { registry } from './commands/index.js';
 
-const SETTINGS_TYPES = new Set(['Config', 'Editor', 'Output']);
+const SETTINGS_TYPES = new Set(['Config', 'Editor']);
 
 /**
- * Extract and merge Config / Editor / Output settings from top-level AST nodes.
+ * Extract and merge Config / Editor settings from top-level AST nodes.
  *
  * @param {object[]} statements
- * @returns {{ config: object, editorOptions: object, output: object }}
+ * @returns {{ config: object, editorOptions: object }}
  */
 export function extractSettings(statements) {
-  let config = {};
+  let config = { width: 1280, height: 720, fps: 30 };
   let editorOptions = {};
-  let output = { width: 1280, height: 720, fps: 30, format: 'mp4' };
 
   for (const stmt of statements) {
     if (stmt.type === 'Config') config = { ...config, ...stmt.settings };
     if (stmt.type === 'Editor') editorOptions = { ...editorOptions, ...stmt.options };
-    if (stmt.type === 'Output') output = { ...output, ...stmt.settings };
   }
 
-  return { config, editorOptions, output };
+  return { config, editorOptions };
 }
 
 /**

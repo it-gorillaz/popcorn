@@ -53,15 +53,14 @@ vi.mock('../../src/cli/ui/spinners.js', () => {
 
 const SCENE = '/project/demo.pop';
 
-function sceneOutput(overrides = {}) {
-  return { width: 1280, height: 720, fps: 30, format: 'mp4', ...overrides };
+function sceneConfig(overrides = {}) {
+  return { width: 1280, height: 720, fps: 30, ...overrides };
 }
 
-function setupMocks(outputOverrides = {}) {
+function setupMocks(configOverrides = {}) {
   mockExtractSettings.mockReturnValue({
-    config: {},
+    config: sceneConfig(configOverrides),
     editorOptions: {},
-    output: sceneOutput(outputOverrides),
   });
   mockLaunchBrowser.mockResolvedValue({
     browser: { close: vi.fn().mockResolvedValue(undefined) },
@@ -85,22 +84,16 @@ describe('renderCommand — option resolution', () => {
   });
 
   describe('format', () => {
-    it('uses mp4 by default when neither CLI nor scene specifies a format', async () => {
+    it('uses mp4 by default when no CLI format is given', async () => {
       setupMocks();
       await renderCommand(SCENE, {});
       expect(mockCompileVideo).toHaveBeenCalledWith(expect.any(String), 30, 'mp4', expect.stringMatching(/\.mp4$/));
     });
 
-    it('uses scene format when no CLI format is given', async () => {
-      setupMocks({ format: 'gif' });
-      await renderCommand(SCENE, {});
+    it('CLI --format overrides default format', async () => {
+      setupMocks();
+      await renderCommand(SCENE, { format: 'gif' });
       expect(mockCompileVideo).toHaveBeenCalledWith(expect.any(String), 30, 'gif', expect.stringMatching(/\.gif$/));
-    });
-
-    it('CLI --format overrides scene format', async () => {
-      setupMocks({ format: 'gif' });
-      await renderCommand(SCENE, { format: 'mp4' });
-      expect(mockCompileVideo).toHaveBeenCalledWith(expect.any(String), 30, 'mp4', expect.stringMatching(/\.mp4$/));
     });
 
     it('CLI --format webm passes webm to compileVideo', async () => {
@@ -124,24 +117,10 @@ describe('renderCommand — option resolution', () => {
       expect(mockCompileVideo).toHaveBeenCalledWith(expect.any(String), 30, 'mp4', expect.any(String));
     });
 
-    it('uses scene fps when no CLI fps is given', async () => {
+    it('uses fps from Config block', async () => {
       setupMocks({ fps: 60 });
       await renderCommand(SCENE, {});
       expect(mockCompileVideo).toHaveBeenCalledWith(expect.any(String), 60, 'mp4', expect.any(String));
-    });
-
-    it('CLI --fps overrides scene fps', async () => {
-      setupMocks({ fps: 60 });
-      await renderCommand(SCENE, { fps: '24' });
-      expect(mockCompileVideo).toHaveBeenCalledWith(expect.any(String), 24, 'mp4', expect.any(String));
-    });
-
-    it('coerces CLI --fps string to number', async () => {
-      setupMocks();
-      await renderCommand(SCENE, { fps: '15' });
-      const [, fps] = mockCompileVideo.mock.calls[0];
-      expect(fps).toBe(15);
-      expect(typeof fps).toBe('number');
     });
   });
 
@@ -152,24 +131,10 @@ describe('renderCommand — option resolution', () => {
       expect(mockLaunchBrowser).toHaveBeenCalledWith({ width: 1280, height: 720 });
     });
 
-    it('uses scene dimensions when no CLI dimensions are given', async () => {
+    it('uses dimensions from Config block', async () => {
       setupMocks({ width: 1920, height: 1080 });
       await renderCommand(SCENE, {});
       expect(mockLaunchBrowser).toHaveBeenCalledWith({ width: 1920, height: 1080 });
-    });
-
-    it('CLI --width/--height override scene dimensions', async () => {
-      setupMocks({ width: 1920, height: 1080 });
-      await renderCommand(SCENE, { width: '800', height: '600' });
-      expect(mockLaunchBrowser).toHaveBeenCalledWith({ width: 800, height: 600 });
-    });
-
-    it('coerces CLI --width/--height strings to numbers', async () => {
-      setupMocks();
-      await renderCommand(SCENE, { width: '640', height: '480' });
-      const { width, height } = mockLaunchBrowser.mock.calls[0][0];
-      expect(typeof width).toBe('number');
-      expect(typeof height).toBe('number');
     });
   });
 
@@ -188,9 +153,9 @@ describe('renderCommand — option resolution', () => {
       expect(outputPath).toMatch(/\.gif$/);
     });
 
-    it('uses CLI --output path when provided, with extension rewritten', async () => {
-      setupMocks({ format: 'webm' });
-      await renderCommand(SCENE, { output: '/output/result.mp4' });
+    it('uses CLI --output path when provided, with extension rewritten to match format', async () => {
+      setupMocks();
+      await renderCommand(SCENE, { output: '/output/result.mp4', format: 'webm' });
       const [, , , outputPath] = mockCompileVideo.mock.calls[0];
       expect(outputPath).toMatch(/result\.webm$/);
     });

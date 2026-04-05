@@ -6,6 +6,9 @@ Config {
   TypingMode Human
   TypingSpeed 80            # words per minute
   TypingErrorChance 0.2
+  Width 1920
+  Height 1080
+  Fps 30
 }
 
 Editor {
@@ -15,13 +18,6 @@ Editor {
   "fontFamily": "JetBrains Mono",
   "minimap": { "enabled": false },
   "lineNumbers": "on"
-}
-
-Output {
-  Width 1920
-  Height 1080
-  Fps 30
-  Format "mp4"              # or "gif"
 }
 
 # ---------------------------------------------------------------------------

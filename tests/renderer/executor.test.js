@@ -18,16 +18,15 @@ function fixture(name) {
 
 describe('extractSettings', () => {
   it('returns defaults when no settings blocks are present', () => {
-    const { config, editorOptions, output } = extractSettings([]);
-    expect(config).toEqual({});
+    const { config, editorOptions } = extractSettings([]);
+    expect(config).toEqual({ width: 1280, height: 720, fps: 30 });
     expect(editorOptions).toEqual({});
-    expect(output).toEqual({ width: 1280, height: 720, fps: 30, format: 'mp4' });
   });
 
   it('merges Config settings', () => {
     const stmts = [{ type: 'Config', settings: { typingMode: 'Human', typingSpeed: 60 } }];
     const { config } = extractSettings(stmts);
-    expect(config).toEqual({ typingMode: 'Human', typingSpeed: 60 });
+    expect(config).toEqual({ width: 1280, height: 720, fps: 30, typingMode: 'Human', typingSpeed: 60 });
   });
 
   it('merges Editor options', () => {
@@ -36,25 +35,24 @@ describe('extractSettings', () => {
     expect(editorOptions).toEqual({ theme: 'vs-dark', fontSize: 14 });
   });
 
-  it('merges Output settings and preserves defaults for missing keys', () => {
-    const stmts = [{ type: 'Output', settings: { width: 1920, height: 1080 } }];
-    const { output } = extractSettings(stmts);
-    expect(output).toEqual({ width: 1920, height: 1080, fps: 30, format: 'mp4' });
+  it('Config Width/Height/Fps override defaults', () => {
+    const stmts = [{ type: 'Config', settings: { width: 1920, height: 1080 } }];
+    const { config } = extractSettings(stmts);
+    expect(config).toEqual({ width: 1920, height: 1080, fps: 30 });
   });
 
   it('ignores non-settings statement types', () => {
     const stmts = [{ type: 'Sleep', value: 1, unit: 's' }];
     const { config, editorOptions } = extractSettings(stmts);
-    expect(config).toEqual({});
+    expect(config).toEqual({ width: 1280, height: 720, fps: 30 });
     expect(editorOptions).toEqual({});
   });
 
-  it('extracts all three blocks from fixture', () => {
+  it('extracts Config and Editor blocks from fixture', () => {
     const { statements } = fixture('ast-settings');
-    const { config, editorOptions, output } = extractSettings(statements);
-    expect(config).toEqual({ typingMode: 'Human', typingSpeed: 60, typingErrorChance: 0.1 });
+    const { config, editorOptions } = extractSettings(statements);
+    expect(config).toEqual({ width: 1920, height: 1080, fps: 60, typingMode: 'Human', typingSpeed: 60, typingErrorChance: 0.1 });
     expect(editorOptions).toEqual({ theme: 'vs-dark', fontSize: 14 });
-    expect(output).toEqual({ width: 1920, height: 1080, fps: 60, format: 'mp4' });
   });
 });
 
@@ -81,13 +79,12 @@ describe('executeAST', () => {
     expect(popcorn.hideAnnotation).toHaveBeenCalledOnce();
   });
 
-  it('skips Config, Editor and Output statements', async () => {
+  it('skips Config and Editor statements', async () => {
     const ast = {
       type: 'Program',
       statements: [
         { type: 'Config', settings: {} },
         { type: 'Editor', options: {} },
-        { type: 'Output', settings: {} },
       ],
     };
     await executeAST(ast, page, {}, {});
