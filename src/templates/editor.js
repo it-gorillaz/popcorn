@@ -26,6 +26,7 @@ require(['vs/editor/editor.main'], () => {
 
   let activePane = 0;
   let paneCount = 1;
+  let annotateFontSize = null;
 
   // Tracks ALL options from the Editor {} DSL block — including theme —
   // so every createEditor() call (initial pane and split panes) uses the
@@ -219,10 +220,18 @@ require(['vs/editor/editor.main'], () => {
       if (editor) editor.setSelection(new monaco.Range(startLine, startCol, endLine, endCol));
     },
 
+    // Set the font size used by all subsequent showAnnotation calls.
+    // Falls back to the Editor block fontSize, then to the CSS default.
+    setAnnotateFontSize(size) {
+      annotateFontSize = size;
+    },
+
     // Show annotation overlay
     showAnnotation(text) {
       const el = document.getElementById('annotation-overlay');
       el.textContent = text;
+      const size = annotateFontSize ?? currentEditorOptions.fontSize;
+      el.style.fontSize = size != null ? `${size}px` : '';
       el.style.display = 'block';
     },
 

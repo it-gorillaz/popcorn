@@ -106,6 +106,16 @@ describe('executeAST', () => {
     expect(popcorn.applyOptions).not.toHaveBeenCalled();
   });
 
+  it('calls setAnnotateFontSize when config.annotateFontSize is set', async () => {
+    await executeAST({ type: 'Program', statements: [] }, page, { annotateFontSize: 24 }, {});
+    expect(popcorn.setAnnotateFontSize).toHaveBeenCalledWith(24);
+  });
+
+  it('does not call setAnnotateFontSize when annotateFontSize is absent', async () => {
+    await executeAST({ type: 'Program', statements: [] }, page, {}, {});
+    expect(popcorn.setAnnotateFontSize).not.toHaveBeenCalled();
+  });
+
   it('warns and continues for unknown statement types', async () => {
     const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
     const ast = { type: 'Program', statements: [{ type: 'Unknown' }] };

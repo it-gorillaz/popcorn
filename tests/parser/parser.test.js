@@ -31,6 +31,18 @@ describe('Config block', () => {
       ],
     });
   });
+
+  it('parses AnnotateFontSize', () => {
+    expect(parse('Config { AnnotateFontSize 24 }')).toEqual({
+      type: 'Program',
+      statements: [
+        {
+          type: 'Config',
+          settings: { annotateFontSize: 24 },
+        },
+      ],
+    });
+  });
 });
 
 describe('Editor block', () => {

@@ -18,6 +18,7 @@ export function makePage() {
 export function makePopcorn(overrides = {}) {
   const mock = {
     applyOptions: vi.fn(),
+    setAnnotateFontSize: vi.fn(),
     hideAnnotation: vi.fn(),
     showAnnotation: vi.fn(),
     pasteText: vi.fn(),

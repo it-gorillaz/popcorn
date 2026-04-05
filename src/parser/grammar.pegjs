@@ -51,6 +51,9 @@ ConfigSetting
   / "TypingErrorChance" _ chance:Number _ {
       return ['typingErrorChance', chance];
     }
+  / "AnnotateFontSize" _ size:Integer _ {
+      return ['annotateFontSize', size];
+    }
 
 TypingMode
   = "Human" / "Machine" / "Burst"
