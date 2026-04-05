@@ -14,8 +14,22 @@ vi.mock('fs/promises', () => ({
   readFile: vi.fn().mockResolvedValue(''),
 }));
 
+const mockExpandImports = vi.fn();
 vi.mock('../../src/parser/index.js', () => ({
   parse: vi.fn().mockReturnValue({ type: 'Program', statements: [] }),
+  expandImports: (...args) => mockExpandImports(...args),
+  ImportFileNotFoundError: class ImportFileNotFoundError extends Error {
+    constructor(msg) {
+      super(msg);
+      this.name = 'ImportFileNotFoundError';
+    }
+  },
+  CircularImportError: class CircularImportError extends Error {
+    constructor(msg) {
+      super(msg);
+      this.name = 'CircularImportError';
+    }
+  },
 }));
 
 const mockExtractSettings = vi.fn();
@@ -57,7 +71,10 @@ function sceneConfig(overrides = {}) {
   return { width: 1280, height: 720, fps: 30, ...overrides };
 }
 
+const EXPANDED_AST = { type: 'Program', statements: [] };
+
 function setupMocks(configOverrides = {}) {
+  mockExpandImports.mockResolvedValue(EXPANDED_AST);
   mockExtractSettings.mockReturnValue({
     config: sceneConfig(configOverrides),
     editorOptions: {},
@@ -72,6 +89,66 @@ function setupMocks(configOverrides = {}) {
 // ---------------------------------------------------------------------------
 // Tests
 // ---------------------------------------------------------------------------
+
+// ---------------------------------------------------------------------------
+// Import the real error classes for instanceof checks in error tests
+// ---------------------------------------------------------------------------
+
+const { ImportFileNotFoundError, CircularImportError } = await import(
+  '../../src/parser/index.js'
+);
+
+// ---------------------------------------------------------------------------
+// ImportScene integration
+// ---------------------------------------------------------------------------
+
+describe('renderCommand — ImportScene', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    vi.spyOn(console, 'log').mockImplementation(() => {});
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  it('calls expandImports with the resolved absolute input path after parse', async () => {
+    setupMocks();
+    await renderCommand(SCENE, {});
+    expect(mockExpandImports).toHaveBeenCalledWith(
+      expect.objectContaining({ type: 'Program' }),
+      expect.stringContaining('demo.pop'),
+    );
+  });
+
+  it('passes the expanded AST to extractSettings', async () => {
+    setupMocks();
+    await renderCommand(SCENE, {});
+    expect(mockExtractSettings).toHaveBeenCalledWith(EXPANDED_AST.statements);
+  });
+
+  it('calls process.exit(1) on ImportFileNotFoundError', async () => {
+    setupMocks();
+    const exitSpy = vi.spyOn(process, 'exit').mockImplementation(() => { throw new Error('process.exit'); });
+    mockExpandImports.mockRejectedValue(
+      new ImportFileNotFoundError('file not found'),
+    );
+    await expect(renderCommand(SCENE, {})).rejects.toThrow('process.exit');
+    expect(exitSpy).toHaveBeenCalledWith(1);
+    exitSpy.mockRestore();
+  });
+
+  it('calls process.exit(1) on CircularImportError', async () => {
+    setupMocks();
+    const exitSpy = vi.spyOn(process, 'exit').mockImplementation(() => { throw new Error('process.exit'); });
+    mockExpandImports.mockRejectedValue(
+      new CircularImportError('circular detected'),
+    );
+    await expect(renderCommand(SCENE, {})).rejects.toThrow('process.exit');
+    expect(exitSpy).toHaveBeenCalledWith(1);
+    exitSpy.mockRestore();
+  });
+});
 
 describe('renderCommand — option resolution', () => {
   beforeEach(() => {

@@ -24,12 +24,22 @@ Comment
 TopLevelStatement
   = ConfigBlock
   / EditorBlock
+  / ImportSceneCommand
   / FileBlock
   / SplitCommand
   / UnsplitCommand
   / FocusCommand
   / SleepCommand
   / AnnotateCommand
+
+// ---------------------------------------------------------------------------
+// ImportScene command
+// ---------------------------------------------------------------------------
+
+ImportSceneCommand
+  = "ImportScene" _ path:StringLiteral _ {
+      return { type: 'ImportScene', path };
+    }
 
 // ---------------------------------------------------------------------------
 // Config block

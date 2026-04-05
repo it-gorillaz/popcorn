@@ -4,7 +4,12 @@ import { tmpdir } from 'os';
 import { join } from 'path';
 import chalk from 'chalk';
 
-import { parse } from '../../parser/index.js';
+import {
+  parse,
+  expandImports,
+  ImportFileNotFoundError,
+  CircularImportError,
+} from '../../parser/index.js';
 import { extractSettings, executeAST } from '../../renderer/executor.js';
 import { launchBrowser } from '../../renderer/browser.js';
 import {
@@ -37,9 +42,16 @@ export async function renderCommand(sceneFile, opts) {
   try {
     source = await readFile(inputPath, 'utf8');
     ast = parse(source);
+    ast = await expandImports(ast, inputPath);
     parseSpinner.succeed(chalk.cyan(`Parsed ${basename(inputPath)}`));
   } catch (err) {
-    parseSpinner.fail(chalk.red(`Parse error: ${err.message}`));
+    if (err instanceof ImportFileNotFoundError) {
+      parseSpinner.fail(chalk.red(`Import error: ${err.message}`));
+    } else if (err instanceof CircularImportError) {
+      parseSpinner.fail(chalk.red(`Circular import: ${err.message}`));
+    } else {
+      parseSpinner.fail(chalk.red(`Parse error: ${err.message}`));
+    }
     process.exit(1);
   }
 
