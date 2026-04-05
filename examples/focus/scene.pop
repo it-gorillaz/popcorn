@@ -1,0 +1,52 @@
+Config {
+  TypingMode Machine
+  TypingSpeed 500
+  Width 900
+  Height 550
+  Fps 15
+}
+
+Editor {
+  "language": "typescript",
+  "theme": "vs-dark",
+  "fontSize": 14,
+  "fontFamily": "JetBrains Mono",
+  "minimap": { "enabled": false },
+  "lineNumbers": "on"
+}
+
+File "a.ts" {
+  Type "// Module A"
+  Enter
+  Type "export const A = 1;"
+  Sleep 1s
+}
+
+Split Right
+
+File "b.ts" {
+  Type "// Module B"
+  Enter
+  Type "export const B = 2;"
+  Sleep 1s
+}
+
+Annotate "Focus switches the active panel to the given file"
+
+Sleep 1s
+
+Focus "a.ts"
+
+Sleep 1s
+
+Annotate "Now focused on a.ts"
+
+Sleep 2s
+
+Focus "b.ts"
+
+Sleep 1s
+
+Annotate "Now focused on b.ts"
+
+Sleep 2s

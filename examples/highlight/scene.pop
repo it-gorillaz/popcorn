@@ -1,0 +1,37 @@
+Config {
+  TypingMode Machine
+  TypingSpeed 500
+  Width 900
+  Height 550
+  Fps 15
+}
+
+Editor {
+  "language": "typescript",
+  "theme": "vs-dark",
+  "fontSize": 14,
+  "fontFamily": "JetBrains Mono",
+  "minimap": { "enabled": false },
+  "lineNumbers": "on"
+}
+
+File "math.ts" {
+  Paste """
+export function add(a: number, b: number): number {
+  return a + b;
+}
+
+export function multiply(a: number, b: number): number {
+  return a * b;
+}
+"""
+  Sleep 1s
+  Annotate "Highlight a single line"
+  Sleep 1s
+  Highlight 1
+  Sleep 2s
+  Annotate "Highlight a range (line:col-line:col)"
+  Sleep 1s
+  Highlight 5:1-7:1
+  Sleep 2s
+}

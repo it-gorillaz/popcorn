@@ -1,0 +1,34 @@
+Config {
+  TypingMode Machine
+  TypingSpeed 500
+  Width 900
+  Height 550
+  Fps 15
+}
+
+Editor {
+  "language": "typescript",
+  "theme": "vs-dark",
+  "fontSize": 14,
+  "fontFamily": "JetBrains Mono",
+  "minimap": { "enabled": false },
+  "lineNumbers": "on"
+}
+
+Annotate "Backspace removes characters or auto-indent levels"
+
+Sleep 1s
+
+File "config.ts" {
+  Type "interface Config {"
+  Enter
+  Type "width: number;"
+  Enter
+  Type "height: number;"
+  Enter
+  Annotate "Backspace 1 removes the auto-indent before the closing brace"
+  Sleep 1s
+  Backspace 1
+  Type "}"
+  Sleep 2s
+}

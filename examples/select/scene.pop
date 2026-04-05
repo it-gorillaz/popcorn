@@ -1,0 +1,36 @@
+Config {
+  TypingMode Machine
+  TypingSpeed 500
+  Width 900
+  Height 550
+  Fps 15
+}
+
+Editor {
+  "language": "typescript",
+  "theme": "vs-dark",
+  "fontSize": 14,
+  "fontFamily": "JetBrains Mono",
+  "minimap": { "enabled": false },
+  "lineNumbers": "on"
+}
+
+File "greetings.ts" {
+  Paste """
+const greeting = "Hello, World!";
+const farewell = "Goodbye, World!";
+console.log(greeting);
+console.log(farewell);
+"""
+  Sleep 1s
+  Annotate "Select selects a range of text (line:col-line:col)"
+  Sleep 1s
+  Select 1:7-1:15
+  Sleep 1s
+  Annotate "Selected 'greeting' on line 1"
+  Sleep 2s
+  Select 2:7-2:15
+  Sleep 1s
+  Annotate "Selected 'farewell' on line 2"
+  Sleep 2s
+}

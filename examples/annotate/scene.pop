@@ -1,0 +1,32 @@
+Config {
+  TypingMode Machine
+  TypingSpeed 500
+  Width 900
+  Height 550
+  Fps 15
+}
+
+Editor {
+  "language": "typescript",
+  "theme": "vs-dark",
+  "fontSize": 14,
+  "fontFamily": "JetBrains Mono",
+  "minimap": { "enabled": false },
+  "lineNumbers": "on"
+}
+
+Annotate "Annotate displays a text overlay on the video frame"
+
+Sleep 2s
+
+File "greet.ts" {
+  Type "function greet(name: string): string {"
+  Enter
+  Type "return `Hello, ${name}!`;"
+  Enter
+  Backspace 1
+  Type "}"
+  Sleep 1s
+  Annotate "This function greets a user by name"
+  Sleep 2s
+}

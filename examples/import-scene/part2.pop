@@ -1,0 +1,15 @@
+Annotate "Scene 2: Implement the factory function"
+
+Sleep 1s
+
+File "user.ts" {
+  Enter
+  Enter
+  Type "function createUser(id: number, name: string): User {"
+  Enter
+  Type "return { id, name };"
+  Enter
+  Backspace 1
+  Type "}"
+  Sleep 2s
+}

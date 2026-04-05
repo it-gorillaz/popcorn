@@ -1,0 +1,38 @@
+Config {
+  TypingMode Machine
+  TypingSpeed 500
+  Width 900
+  Height 550
+  Fps 15
+}
+
+Editor {
+  "language": "typescript",
+  "theme": "vs-dark",
+  "fontSize": 14,
+  "fontFamily": "JetBrains Mono",
+  "minimap": { "enabled": false },
+  "lineNumbers": "on"
+}
+
+Annotate "File opens a named tab in the editor"
+
+Sleep 1s
+
+File "hello.ts" {
+  Type "const message = 'Hello, World!';"
+  Enter
+  Type "console.log(message);"
+  Sleep 2s
+}
+
+Annotate "Switching to a second file tab"
+
+Sleep 1s
+
+File "goodbye.ts" {
+  Type "const farewell = 'Goodbye, World!';"
+  Enter
+  Type "console.log(farewell);"
+  Sleep 2s
+}
