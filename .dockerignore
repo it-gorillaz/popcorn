@@ -1,0 +1,14 @@
+.git
+node_modules
+
+# Build artifacts — generated fresh inside the builder stage
+src/parser/parser.js
+src/templates/vendor/
+
+# Dev and test files not needed in the image
+tests/
+examples/
+*.md
+.prettierrc
+eslint.config.js
+*.log
