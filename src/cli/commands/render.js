@@ -43,11 +43,11 @@ export async function renderCommand(sceneFile, opts) {
     process.exit(1);
   }
 
-  const { config, editorOptions, output } = extractSettings(ast.statements);
-  const format = opts.format ?? output.format ?? 'mp4';
-  const fps = opts.fps ? Number(opts.fps) : output.fps ?? 30;
-  const width = opts.width ? Number(opts.width) : output.width ?? 1280;
-  const height = opts.height ? Number(opts.height) : output.height ?? 720;
+  const { config, editorOptions } = extractSettings(ast.statements);
+  const format = opts.format ?? 'mp4';
+  const fps = config.fps;
+  const width = config.width;
+  const height = config.height;
 
   const finalOutput = outputPath.replace(/\.\w+$/, `.${format}`);
 
