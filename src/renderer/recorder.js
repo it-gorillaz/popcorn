@@ -58,11 +58,11 @@ export async function startCapture(page, fps, framesDir) {
 }
 
 /**
- * Compile the captured PNG frames into an MP4 or GIF.
+ * Compile the captured PNG frames into an MP4, GIF, or WebM.
  *
  * @param {string} framesDir   Directory containing frame-000001.png …
  * @param {number} fps
- * @param {string} format      'mp4' | 'gif'
+ * @param {string} format      'mp4' | 'gif' | 'webm'
  * @param {string} outputPath  Absolute path for the output file
  */
 export async function compileVideo(framesDir, fps, format, outputPath) {
@@ -70,6 +70,8 @@ export async function compileVideo(framesDir, fps, format, outputPath) {
 
   if (format === 'gif') {
     await compileGif(inputPattern, fps, outputPath);
+  } else if (format === 'webm') {
+    await compileWebm(inputPattern, fps, outputPath);
   } else {
     await compileMp4(inputPattern, fps, outputPath);
   }
@@ -83,6 +85,19 @@ async function compileMp4(inputPattern, fps, outputPath) {
     '-c:v', 'libx264',
     '-pix_fmt', 'yuv420p',       // max compatibility (QuickTime, browsers)
     '-crf', '18',                // high quality (0 = lossless, 51 = worst)
+    outputPath,
+  ]);
+}
+
+async function compileWebm(inputPattern, fps, outputPath) {
+  await execa(ffmpegPath, [
+    '-y',                        // overwrite output without asking
+    '-framerate', String(fps),
+    '-i', inputPattern,
+    '-c:v', 'libvpx-vp9',
+    '-pix_fmt', 'yuva420p',      // VP9 with alpha channel support
+    '-crf', '31',                // constant quality (0 = lossless, 63 = worst)
+    '-b:v', '0',                 // required for constant-quality mode in VP9
     outputPath,
   ]);
 }

@@ -12,7 +12,7 @@ program
   .command('render <scene>')
   .description('Render a .pop scene file into a video')
   .option('-o, --output <file>', 'output file path')
-  .option('-f, --format <format>', 'output format: mp4 or gif (overrides scene Config)')
+  .option('-f, --format <format>', 'output format: mp4, gif, or webm (overrides scene Config)')
   .option('--fps <number>', 'frames per second (overrides scene Config)')
   .option('--width <number>', 'viewport width in pixels (overrides scene Config)')
   .option('--height <number>', 'viewport height in pixels (overrides scene Config)')
