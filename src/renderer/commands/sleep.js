@@ -1,4 +1,4 @@
-import { sleep } from '../annimations/typing.js';
+import { sleep } from '../animations/typing.js';
 
 function toMs({ value, unit }) {
   return unit === 'ms' ? value : Math.round(value * 1000);

@@ -5,7 +5,7 @@
  * to its dedicated handler via the command registry.
  */
 
-import { buildTypingStrategy } from './annimations/typing.js';
+import { buildTypingStrategy } from './animations/typing.js';
 import { registry } from './commands/index.js';
 import { VIDEO_PRESETS } from './presets.js';
 

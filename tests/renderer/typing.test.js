@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
-import { buildTypingStrategy, TypingMode } from '../../src/renderer/annimations/typing.js';
+import { buildTypingStrategy, TypingMode } from '../../src/renderer/animations/typing.js';
 import { makePage, makePopcorn, removePopcorn } from './helpers.js';
 
 
