@@ -1,0 +1,221 @@
+# ---------------------------------------------------------------------------
+# Full demo — refactoring a legacy UserService into clean TypeScript modules
+# ---------------------------------------------------------------------------
+
+Config {
+  TypingMode Machine
+  TypingSpeed 480
+  Width 1280
+  Height 720
+  Fps 20
+}
+
+Editor {
+  "language": "typescript",
+  "theme": "vs-dark",
+  "fontSize": 16,
+  "fontFamily": "JetBrains Mono",
+  "minimap": { "enabled": false },
+  "lineNumbers": "off",
+  "roundedSelection": false,
+  "scrollBeyondLastLine": false,
+  "renderValidationDecorations": "off",
+  "guides": { "indentation": false }
+}
+
+Annotate "🎬 Welcome to popcorn — script code, render cinema"
+
+Sleep 2s
+
+Annotate "😈 Let's start with a classic legacy codebase..."
+
+Sleep 1.5s
+
+# ── Scene 1: the legacy monster ────────────────────────────────────────────
+
+File "user-service.ts" {
+  Paste """
+class UserService {
+  private db: any;
+  private cache: any;
+
+  constructor(db: any, cache: any) {
+    this.db = db;
+    this.cache = cache;
+  }
+
+  async processUser(data: any) {
+    // validate
+    if (!data.name || data.name.length < 2) throw new Error('bad name');
+    if (!data.email || !data.email.includes('@')) throw new Error('bad email');
+    if (!data.age || data.age < 0 || data.age > 150) throw new Error('bad age');
+
+    // format
+    data.name = data.name.trim().toLowerCase();
+    data.email = data.email.trim().toLowerCase();
+    data.createdAt = new Date().toISOString();
+
+    // persist
+    const existing = await this.db.findOne({ email: data.email });
+    if (existing) throw new Error('already exists');
+    const saved = await this.db.insert(data);
+    await this.cache.set(`user:${saved.id}`, saved, 3600);
+    return saved;
+  }
+}
+"""
+  Sleep 1s
+
+  Annotate "😱 Validation, formatting, and persistence — all in one method"
+  Sleep 2s
+
+  Highlight 12:1-14:1
+  Sleep 1s
+  Annotate "🚨 Three validation checks with no context or helpful messages"
+  Sleep 2s
+
+  Highlight 17:1-20:1
+  Sleep 1s
+  Annotate "📦 Mutation and formatting tangled right into the flow"
+  Sleep 2s
+
+  Highlight 23:1-27:1
+  Sleep 1s
+  Annotate "🗄️ Direct database and cache calls buried at the bottom. Bold choice."
+  Sleep 2.5s
+}
+
+Annotate "✂️ Time to refactor — let's split this monster into clean modules!"
+
+Sleep 1.5s
+
+# ── Scene 2: extract pure types ────────────────────────────────────────────
+
+File "user.types.ts" {
+  Annotate "💎 Step 1 — extract pure data types"
+  Sleep 1s
+
+  Type "export interface User {"
+  Enter
+  Type "id: string;"
+  Enter
+  Type "name: string;"
+  Enter
+  Type "email: string;"
+  Enter
+  Type "age: number;"
+  Enter
+  Type "createdAt: string;"
+  Enter
+  Backspace 1
+  Type "}"
+  Enter
+  Enter
+  Type "export type NewUser = Omit<User, 'id' | 'createdAt'>;"
+  Sleep 1s
+
+  Annotate "🧱 A pure data shape — no behavior, no surprises, no any"
+  Sleep 2.5s
+}
+
+# ── Scene 3: pure validation function ─────────────────────────────────────
+
+File "user.validator.ts" {
+  Annotate "✅ Step 2 — validation as a pure, testable function"
+  Sleep 1s
+
+  Paste """
+import type { NewUser } from './user.types';
+
+export function validateUser(data: NewUser): void {
+  if (!data.name || data.name.length < 2)
+    throw new Error('Name must be at least 2 characters');
+
+  if (!data.email || !data.email.includes('@'))
+    throw new Error('Email must be a valid address');
+
+  if (data.age == null || data.age < 0 || data.age > 150)
+    throw new Error('Age must be between 0 and 150');
+}
+"""
+  Sleep 1s
+
+  Annotate "🎯 One function, one responsibility — easy to test and reuse"
+  Sleep 2.5s
+}
+
+# ── Scene 4: the clean service (single pane) ──────────────────────────────
+
+File "user.service.ts" {
+  Annotate "🚀 Step 3 — a clean service with explicit, typed dependencies"
+  Sleep 1s
+
+  Type "import type { User, NewUser } from './user.types';"
+  Enter
+  Type "import { validateUser } from './user.validator';"
+  Enter
+  Enter
+  Type "export class UserService {"
+  Enter
+  Type "constructor("
+  Enter
+  Type "private readonly db: Database,"
+  Enter
+  Type "private readonly cache: Cache,"
+  Enter
+  Backspace 1
+  Type ") {}"
+  Enter
+  Enter
+  Type "async createUser(data: NewUser): Promise<User> {"
+  Enter
+  Type "validateUser(data);"
+  Enter
+  Type "const user = await this.db.insert(normalize(data));"
+  Enter
+  Type "await this.cache.set(`user:${user.id}`, user, 3600);"
+  Enter
+  Type "return user;"
+  Enter
+  Backspace 1
+  Type "}"
+  Enter
+  Backspace 1
+  Type "}"
+  Sleep 1s
+
+  Annotate "🏆 Typed, composed, dependency-injected — and actually readable!"
+  Sleep 2.5s
+}
+
+# ── Scene 5: side-by-side comparison ──────────────────────────────────────
+# Switch pane 0 back to the legacy file, then split and open the new
+# service on the right so both are visible at the same time.
+
+Annotate "👀 Let's put them side by side and compare"
+
+Sleep 1.5s
+
+File "user-service.ts" {
+  Sleep 0.5s
+}
+
+Split Right
+
+File "user.service.ts" {
+  Sleep 0.5s
+}
+
+Annotate "😬 Left: before — 30 lines, 3 responsibilities, 0 types"
+
+Sleep 3s
+
+Annotate "✨ Right: after — typed, composed, and each file does one thing"
+
+Sleep 3s
+
+Unsplit
+
+Annotate "🍿 That's popcorn — script code, render cinema, grab your popcorn!"
+
+Sleep 3s

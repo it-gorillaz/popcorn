@@ -1,0 +1,52 @@
+Config {
+  TypingMode Machine
+  TypingSpeed 500
+  Width 900
+  Height 550
+  Fps 15
+}
+
+Editor {
+  "language": "typescript",
+  "theme": "vs-dark",
+  "fontSize": 14,
+  "fontFamily": "JetBrains Mono",
+  "minimap": { "enabled": false },
+  "lineNumbers": "on"
+}
+
+Annotate "Split opens a second editor panel"
+
+Sleep 1s
+
+File "before.ts" {
+  Type "class User {"
+  Enter
+  Type "name: string;"
+  Enter
+  Backspace 1
+  Type "}"
+  Sleep 1s
+}
+
+Split Right
+
+Annotate "Writing the refactored version side by side"
+
+Sleep 1s
+
+File "after.ts" {
+  Type "interface User {"
+  Enter
+  Type "name: string;"
+  Enter
+  Backspace 1
+  Type "}"
+  Sleep 2s
+}
+
+Unsplit
+
+Annotate "Unsplit closes the split view"
+
+Sleep 2s

@@ -1,0 +1,15 @@
+Annotate "Scene 1: Define the interface"
+
+Sleep 1s
+
+File "user.ts" {
+  Type "interface User {"
+  Enter
+  Type "id: number;"
+  Enter
+  Type "name: string;"
+  Enter
+  Backspace 1
+  Type "}"
+  Sleep 2s
+}

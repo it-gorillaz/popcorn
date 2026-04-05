@@ -1,0 +1,34 @@
+Config {
+  TypingMode Machine
+  TypingSpeed 500
+  Width 900
+  Height 550
+  Fps 15
+}
+
+Editor {
+  "language": "typescript",
+  "theme": "vs-dark",
+  "fontSize": 14,
+  "fontFamily": "JetBrains Mono",
+  "minimap": { "enabled": false },
+  "lineNumbers": "on"
+}
+
+Annotate "Sleep pauses the scene for a given duration"
+
+Sleep 2s
+
+File "steps.ts" {
+  Annotate "Step 1 — pause 1 second"
+  Type "const x = 10;"
+  Sleep 1s
+  Enter
+  Annotate "Step 2 — pause 1500ms"
+  Type "const y = x * 2;"
+  Sleep 1500ms
+  Enter
+  Annotate "Step 3 — pause 2 seconds"
+  Type "console.log(y);"
+  Sleep 2s
+}

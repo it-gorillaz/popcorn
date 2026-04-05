@@ -1,0 +1,38 @@
+Config {
+  TypingMode Human
+  TypingSpeed 400
+  Width 900
+  Height 550
+  Fps 15
+}
+
+Editor {
+  "language": "typescript",
+  "theme": "vs-dark",
+  "fontSize": 14,
+  "fontFamily": "JetBrains Mono",
+  "minimap": { "enabled": false },
+  "lineNumbers": "on"
+}
+
+Annotate "Type simulates keystroke-by-keystroke typing"
+
+Sleep 1s
+
+File "hello.ts" {
+  Type "const message = 'Hello, World!';"
+  Enter
+  Type "console.log(message);"
+  Sleep 1s
+  Enter
+  Enter
+  Annotate "Multi-line Type with triple-quote syntax"
+  Sleep 1s
+  Type """
+function greet(name: string): string {
+return `Hello, ${name}!`;
+"""
+  Backspace 1
+  Type "}"
+  Sleep 2s
+}

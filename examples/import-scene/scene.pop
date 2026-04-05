@@ -1,0 +1,19 @@
+Config {
+  TypingMode Machine
+  TypingSpeed 500
+  Width 900
+  Height 550
+  Fps 15
+}
+
+Editor {
+  "language": "typescript",
+  "theme": "vs-dark",
+  "fontSize": 14,
+  "fontFamily": "JetBrains Mono",
+  "minimap": { "enabled": false },
+  "lineNumbers": "on"
+}
+
+ImportScene "part1.pop"
+ImportScene "part2.pop"

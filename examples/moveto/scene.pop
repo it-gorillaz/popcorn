@@ -1,0 +1,43 @@
+Config {
+  TypingMode Machine
+  TypingSpeed 500
+  Width 900
+  Height 550
+  Fps 15
+}
+
+Editor {
+  "language": "typescript",
+  "theme": "vs-dark",
+  "fontSize": 14,
+  "fontFamily": "JetBrains Mono",
+  "minimap": { "enabled": false },
+  "lineNumbers": "on"
+}
+
+File "functions.ts" {
+  Paste """
+function add(a: number, b: number): number {
+  return a + b;
+}
+
+function subtract(a: number, b: number): number {
+  return a - b;
+}
+
+function multiply(a: number, b: number): number {
+  return a * b;
+}
+"""
+  Sleep 1s
+  Annotate "MoveTo moves the cursor to a specific line"
+  Sleep 1s
+  MoveTo 5
+  Sleep 1s
+  Annotate "Cursor is now at line 5"
+  Sleep 2s
+  MoveTo 9
+  Sleep 1s
+  Annotate "Cursor is now at line 9"
+  Sleep 2s
+}

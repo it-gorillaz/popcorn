@@ -1,0 +1,33 @@
+Config {
+  TypingMode Machine
+  TypingSpeed 500
+  Width 900
+  Height 550
+  Fps 15
+}
+
+Editor {
+  "language": "typescript",
+  "theme": "vs-dark",
+  "fontSize": 14,
+  "fontFamily": "JetBrains Mono",
+  "minimap": { "enabled": false },
+  "lineNumbers": "on"
+}
+
+Annotate "Paste inserts text instantly, preserving exact formatting"
+
+Sleep 1s
+
+File "utils.ts" {
+  Paste """
+export function add(a: number, b: number): number {
+  return a + b;
+}
+
+export function multiply(a: number, b: number): number {
+  return a * b;
+}
+"""
+  Sleep 2s
+}
