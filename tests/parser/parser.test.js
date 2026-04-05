@@ -145,6 +145,24 @@ describe('Type', () => {
       ],
     });
   });
+
+  it('parses a triple-quoted multi-line string, stripping only the leading newline', () => {
+    expect(parse(fixture('type-multiline'))).toEqual({
+      type: 'Program',
+      statements: [
+        {
+          type: 'File',
+          name: 'main.ts',
+          commands: [
+            {
+              type: 'Type',
+              text: 'export interface User {\n  id: number;\n  name: string;\n}\n',
+            },
+          ],
+        },
+      ],
+    });
+  });
 });
 
 describe('Paste', () => {
@@ -156,6 +174,24 @@ describe('Paste', () => {
           type: 'File',
           name: 'main.ts',
           commands: [{ type: 'Paste', text: "import { foo } from 'bar';" }],
+        },
+      ],
+    });
+  });
+
+  it('parses a triple-quoted multi-line string, stripping only the leading newline', () => {
+    expect(parse(fixture('paste-multiline'))).toEqual({
+      type: 'Program',
+      statements: [
+        {
+          type: 'File',
+          name: 'main.ts',
+          commands: [
+            {
+              type: 'Paste',
+              text: 'const x = 1;\nconst y = 2;\nconst z = 3;\n',
+            },
+          ],
         },
       ],
     });

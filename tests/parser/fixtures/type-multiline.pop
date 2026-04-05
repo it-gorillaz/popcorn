@@ -1,0 +1,8 @@
+File "main.ts" {
+  Type """
+export interface User {
+  id: number;
+  name: string;
+}
+"""
+}

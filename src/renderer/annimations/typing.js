@@ -80,6 +80,23 @@ export function buildTypingStrategy(config) {
     }
 
     for (const char of text) {
+      // --- Delay calculation (shared for all char types) ---
+      let delay;
+      if (mode === TypingMode.HUMAN) {
+        // ± 30 % Gaussian jitter, floored at 10 ms
+        delay = Math.max(10, baseDelay + gaussianRandom() * baseDelay * 0.3);
+      } else {
+        // Machine: fixed
+        delay = baseDelay;
+      }
+
+      // --- Newline: press Enter instead of typing the character ---
+      if (char === '\n') {
+        await page.evaluate(() => globalThis.__popcorn.pressKey('Enter'));
+        await sleep(delay);
+        continue;
+      }
+
       // --- Human mode: maybe inject a typo ---
       if (mode === TypingMode.HUMAN && errorChance > 0 && Math.random() < errorChance) {
         const typo = randomAdjacentChar(char);
@@ -92,16 +109,6 @@ export function buildTypingStrategy(config) {
       }
 
       await page.evaluate((c) => globalThis.__popcorn.typeChar(c), char);
-
-      // --- Delay ---
-      let delay;
-      if (mode === TypingMode.HUMAN) {
-        // ± 30 % Gaussian jitter, floored at 10 ms
-        delay = Math.max(10, baseDelay + gaussianRandom() * baseDelay * 0.3);
-      } else {
-        // Machine: fixed
-        delay = baseDelay;
-      }
       await sleep(delay);
     }
   }
