@@ -28,4 +28,5 @@ One folder per command, each with a `scene.pop` script and a rendered `demo.gif`
 | [Sleep](sleep/) | Pause the scene for a given duration |
 | [Split / Unsplit](split/) | Open and close a second editor panel |
 | [Tab](tab/) | Press Tab for manual indentation |
+| [Themes](themes/) | Apply community themes to the Monaco editor |
 | [Type](type/) | Type text character by character |

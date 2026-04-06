@@ -417,6 +417,7 @@ npm run build:parser
 | [peggy](https://github.com/peggyjs/peggy) | PEG parser generator — compiles the `.pop` grammar |
 | [playwright](https://github.com/microsoft/playwright) | Headless Chromium — renders the editor and captures frames |
 | [monaco-editor](https://github.com/microsoft/monaco-editor) | VS Code editor engine running inside the browser |
+| [monaco-themes](https://github.com/brijeshb42/monaco-themes) | 54 community themes for Monaco, bundled locally |
 | [ffmpeg-static](https://github.com/eugeneware/ffmpeg-static) | Bundled FFmpeg binary — encodes frames into mp4 / gif / webm |
 | [chalk](https://github.com/chalk/chalk) | Terminal colors |
 | [ora](https://github.com/sindresorhus/ora) | CLI spinners |

@@ -1,0 +1,42 @@
+Config {
+  TypingMode Machine
+  TypingSpeed 460
+  Width 900
+  Height 550
+  Fps 15
+}
+
+Editor {
+  "language": "typescript",
+  "theme": "Dracula",
+  "fontSize": 14,
+  "fontFamily": "JetBrains Mono",
+  "minimap": { "enabled": false },
+  "lineNumbers": "on"
+}
+
+Annotate "Dracula"
+Sleep 1s
+
+File "api.ts" {
+  Paste """
+interface User {
+  id: number;
+  name: string;
+  email: string;
+  role: 'admin' | 'viewer';
+}
+
+async function fetchUser(id: number): Promise<User> {
+  const res = await fetch(`/api/users/${id}`);
+  if (!res.ok) throw new Error(`Not found: ${id}`);
+  return res.json() as Promise<User>;
+}
+
+// Format a greeting for the given user
+function greet(user: User): string {
+  return `Hello, ${user.name}! You are logged in as ${user.role}.`;
+}
+"""
+  Sleep 3s
+}

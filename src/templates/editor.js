@@ -15,6 +15,17 @@ window.MonacoEnvironment = {
 require.config({ paths: { vs: './vendor/monaco/vs' } });
 
 require(['vs/editor/editor.main'], () => {
+  // Register all community themes from the pre-built bundle before any editor is created
+  if (window.__monacoThemes) {
+    for (const [name, data] of Object.entries(window.__monacoThemes)) {
+      try {
+        monaco.editor.defineTheme(name, data);
+      } catch (e) {
+        console.warn(`popcorn: skipping theme "${name}" — ${e.message}`);
+      }
+    }
+  }
+
   // Map of filename → { model, language }
   const files = new Map();
 
