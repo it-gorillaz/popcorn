@@ -2,7 +2,7 @@
 
 A complete scene showcasing what popcorn can do — scripted annotations, typing animations, paste, highlights, split view, and focus, all in one recording.
 
-**Story**: refactoring a legacy `UserService` god-class into clean, typed TypeScript modules.
+**Story**: refactoring a legacy `createUser` function (untyped, untestable, with generic errors) into clean TypeScript using explicit interfaces, a factory function with dependency injection, and zod for validation.
 
 ## Demo
 
@@ -25,11 +25,11 @@ A complete scene showcasing what popcorn can do — scripted annotations, typing
 
 ```
 scene.pop
-├── Scene 1 — paste the legacy UserService and highlight its problems
-├── Scene 2 — type the pure User types (user.types.ts)
-├── Scene 3 — paste the clean validator (user.validator.ts)
-├── Scene 4 — type the new service side-by-side (Split Right)
-└── Scene 5 — compare before/after with Focus, then Unsplit
+├── Scene 1 — paste the legacy createUser and highlight its problems
+├── Scene 2 — type explicit types and the Database interface (user.types.ts)
+├── Scene 3 — paste the zod validation schema (user.schema.ts)
+├── Scene 4 — type the factory function with injected db (user.repository.ts)
+└── Scene 5 — compare before/after side-by-side, then Unsplit
 ```
 
 ## Editor setup
@@ -37,7 +37,7 @@ scene.pop
 ```pop
 Editor {
   "language": "typescript",
-  "theme": "vs-dark",
+  "theme": "Monokai",
   "fontSize": 16,
   "fontFamily": "JetBrains Mono",
   "minimap": { "enabled": false },

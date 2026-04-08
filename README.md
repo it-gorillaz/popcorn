@@ -1,10 +1,6 @@
-<div align="center">
-  <br>
-  <p><font size="7">🍿</font></p>
-  <h3>popcorn</h3>
-  <p>Script code, render cinema, grab your popcorn 🍿🎬</p>
-  <br>
-</div>
+# popcorn
+
+Script code, render cinema, grab your popcorn 🍿🎬
 
 ---
 
@@ -13,6 +9,8 @@
 Perfect for tutorial clips, conference demos, social content, and anything else where a live-coding screencast would be too risky or too tedious to record in one take.
 
 ![demo](examples/full-demo/demo.gif)
+
+<p><sub>Generated with popcorn — see the <a href="examples/full-demo">full-demo example</a>.</sub></p>
 
 ---
 
@@ -46,10 +44,10 @@ Render a `.pop` scene file into a video.
 popcorn render <scene> [options]
 ```
 
-| Option | Description |
-|---|---|
-| `-o, --output <file>` | Output file path (defaults to the scene file name with the appropriate extension) |
-| `-f, --format <format>` | Output format: `mp4`, `gif`, or `webm` (defaults to `mp4`) |
+| Option                  | Description                                                                       |
+| ----------------------- | --------------------------------------------------------------------------------- |
+| `-o, --output <file>`   | Output file path (defaults to the scene file name with the appropriate extension) |
+| `-f, --format <format>` | Output format: `mp4`, `gif`, or `webm` (defaults to `mp4`)                        |
 
 **Examples:**
 
@@ -107,33 +105,33 @@ Config {
 }
 ```
 
-| Setting | Values | Description |
-|---|---|---|
-| `TypingMode` | `Human` \| `Machine` \| `Burst` | Controls keystroke rhythm. `Human` adds variable delays, `Machine` is steady, `Burst` types instantly |
-| `TypingSpeed` | integer | Characters per minute |
-| `TypingErrorChance` | 0.0 – 1.0 | Probability of a simulated typo per keystroke (Human mode) |
-| `AnnotateFontSize` | integer | Font size of annotation overlays |
-| `VideoPreset` | see presets table | Named resolution/fps preset |
-| `Width` | integer | Frame width in pixels (overrides preset) |
-| `Height` | integer | Frame height in pixels (overrides preset) |
-| `Fps` | integer | Frames per second (overrides preset) |
+| Setting             | Values                          | Description                                                                                           |
+| ------------------- | ------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| `TypingMode`        | `Human` \| `Machine` \| `Burst` | Controls keystroke rhythm. `Human` adds variable delays, `Machine` is steady, `Burst` types instantly |
+| `TypingSpeed`       | integer                         | Characters per minute                                                                                 |
+| `TypingErrorChance` | 0.0 – 1.0                       | Probability of a simulated typo per keystroke (Human mode)                                            |
+| `AnnotateFontSize`  | integer                         | Font size of annotation overlays                                                                      |
+| `VideoPreset`       | see presets table               | Named resolution/fps preset                                                                           |
+| `Width`             | integer                         | Frame width in pixels (overrides preset)                                                              |
+| `Height`            | integer                         | Frame height in pixels (overrides preset)                                                             |
+| `Fps`               | integer                         | Frames per second (overrides preset)                                                                  |
 
 #### Video presets
 
 `VideoPreset` sets the default width, height, and fps for common publishing targets. You can still override any individual value after setting a preset.
 
-| Preset | Width | Height | FPS |
-|---|---|---|---|
-| `YouTube` | 1920 | 1080 | 30 |
-| `YouTubeShorts` | 1080 | 1920 | 30 |
-| `InstagramReel` | 1080 | 1920 | 30 |
-| `InstagramPost` | 1080 | 1080 | 30 |
-| `InstagramPostPortrait` | 1080 | 1350 | 30 |
-| `TikTok` | 1080 | 1920 | 30 |
-| `Twitter` | 1280 | 720 | 30 |
-| `LinkedIn` | 1920 | 1080 | 30 |
-| `Facebook` | 1920 | 1080 | 30 |
-| `FacebookReel` | 1080 | 1920 | 30 |
+| Preset                  | Width | Height | FPS |
+| ----------------------- | ----- | ------ | --- |
+| `YouTube`               | 1920  | 1080   | 30  |
+| `YouTubeShorts`         | 1080  | 1920   | 30  |
+| `InstagramReel`         | 1080  | 1920   | 30  |
+| `InstagramPost`         | 1080  | 1080   | 30  |
+| `InstagramPostPortrait` | 1080  | 1350   | 30  |
+| `TikTok`                | 1080  | 1920   | 30  |
+| `Twitter`               | 1280  | 720    | 30  |
+| `LinkedIn`              | 1920  | 1080   | 30  |
+| `Facebook`              | 1920  | 1080   | 30  |
+| `FacebookReel`          | 1080  | 1920   | 30  |
 
 ---
 
@@ -356,6 +354,7 @@ Focus "user-refactored.ts"
 The `examples/` directory contains a full working demo. `movie.pop` is the entry point that sets global config and imports two scene files:
 
 **`examples/movie.pop`**
+
 ```
 Config {
   TypingMode Machine
@@ -411,19 +410,19 @@ npm run build:parser
 
 ## Technologies
 
-| Library | Purpose |
-|---|---|
-| [commander](https://github.com/tj/commander.js) | CLI framework |
-| [peggy](https://github.com/peggyjs/peggy) | PEG parser generator — compiles the `.pop` grammar |
-| [playwright](https://github.com/microsoft/playwright) | Headless Chromium — renders the editor and captures frames |
-| [monaco-editor](https://github.com/microsoft/monaco-editor) | VS Code editor engine running inside the browser |
-| [monaco-themes](https://github.com/brijeshb42/monaco-themes) | 54 community themes for Monaco, bundled locally |
+| Library                                                      | Purpose                                                      |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| [commander](https://github.com/tj/commander.js)              | CLI framework                                                |
+| [peggy](https://github.com/peggyjs/peggy)                    | PEG parser generator — compiles the `.pop` grammar           |
+| [playwright](https://github.com/microsoft/playwright)        | Headless Chromium — renders the editor and captures frames   |
+| [monaco-editor](https://github.com/microsoft/monaco-editor)  | VS Code editor engine running inside the browser             |
+| [monaco-themes](https://github.com/brijeshb42/monaco-themes) | 54 community themes for Monaco, bundled locally              |
 | [ffmpeg-static](https://github.com/eugeneware/ffmpeg-static) | Bundled FFmpeg binary — encodes frames into mp4 / gif / webm |
-| [chalk](https://github.com/chalk/chalk) | Terminal colors |
-| [ora](https://github.com/sindresorhus/ora) | CLI spinners |
-| [cli-progress](https://github.com/npkgz/cli-progress) | Progress bars |
-| [execa](https://github.com/sindresorhus/execa) | Child process execution |
-| [vitest](https://github.com/vitest-dev/vitest) | Unit test runner |
+| [chalk](https://github.com/chalk/chalk)                      | Terminal colors                                              |
+| [ora](https://github.com/sindresorhus/ora)                   | CLI spinners                                                 |
+| [cli-progress](https://github.com/npkgz/cli-progress)        | Progress bars                                                |
+| [execa](https://github.com/sindresorhus/execa)               | Child process execution                                      |
+| [vitest](https://github.com/vitest-dev/vitest)               | Unit test runner                                             |
 
 ---
 
