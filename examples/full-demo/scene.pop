@@ -1,5 +1,5 @@
 # ---------------------------------------------------------------------------
-# Full demo — refactoring a legacy UserService into clean TypeScript modules
+# Full demo — refactoring a legacy createUser function into clean TypeScript
 # ---------------------------------------------------------------------------
 
 Config {
@@ -8,11 +8,12 @@ Config {
   Width 1280
   Height 720
   Fps 20
+  AnnotateFontSize 22
 }
 
 Editor {
   "language": "typescript",
-  "theme": "vs-dark",
+  "theme": "Night-Owl",
   "fontSize": 16,
   "fontFamily": "JetBrains Mono",
   "minimap": { "enabled": false },
@@ -20,6 +21,9 @@ Editor {
   "roundedSelection": false,
   "scrollBeyondLastLine": false,
   "renderValidationDecorations": "off",
+  "renderLineHighlight": "none",
+  "overviewRulerLanes": 0,
+  "overviewRulerBorder": false,
   "guides": { "indentation": false }
 }
 
@@ -27,72 +31,65 @@ Annotate "🎬 Welcome to popcorn — script code, render cinema"
 
 Sleep 2s
 
-Annotate "😈 Let's start with a classic legacy codebase..."
+Annotate "😈 Let's start with a classic legacy function..."
 
 Sleep 1.5s
 
 # ── Scene 1: the legacy monster ────────────────────────────────────────────
 
-File "user-service.ts" {
+File "create-user.ts" {
   Paste """
-class UserService {
-  private db: any;
-  private cache: any;
+async function createUser(data: any) {
+  const db = new Database('postgres://localhost/app');
 
-  constructor(db: any, cache: any) {
-    this.db = db;
-    this.cache = cache;
-  }
+  if (!data.name) throw new Error('error');
+  if (!data.email || !data.email.includes('@'))
+    throw new Error('error');
+  if (!data.age || data.age < 18)
+    throw new Error('error');
 
-  async processUser(data: any) {
-    // validate
-    if (!data.name || data.name.length < 2) throw new Error('bad name');
-    if (!data.email || !data.email.includes('@')) throw new Error('bad email');
-    if (!data.age || data.age < 0 || data.age > 150) throw new Error('bad age');
+  const exists = await db.query(
+    'SELECT id FROM users WHERE email = $1',
+    [data.email]
+  );
+  if (exists.rows.length) throw new Error('error');
 
-    // format
-    data.name = data.name.trim().toLowerCase();
-    data.email = data.email.trim().toLowerCase();
-    data.createdAt = new Date().toISOString();
-
-    // persist
-    const existing = await this.db.findOne({ email: data.email });
-    if (existing) throw new Error('already exists');
-    const saved = await this.db.insert(data);
-    await this.cache.set(`user:${saved.id}`, saved, 3600);
-    return saved;
-  }
+  const result = await db.query(
+    'INSERT INTO users (name, email, age) VALUES ($1, $2, $3) RETURNING *',
+    [data.name, data.email, data.age]
+  );
+  return result.rows[0];
 }
 """
   Sleep 1s
 
-  Annotate "😱 Validation, formatting, and persistence — all in one method"
+  Annotate "😱 data: any everywhere — welcome to the legacy zone"
   Sleep 2s
 
-  Highlight 12:1-14:1
+  Highlight 1:1-2:1
   Sleep 1s
-  Annotate "🚨 Three validation checks with no context or helpful messages"
+  Annotate "🚨 any type — no safety, no hints, no confidence"
   Sleep 2s
 
-  Highlight 17:1-20:1
+  Highlight 2:1-3:1
   Sleep 1s
-  Annotate "📦 Mutation and formatting tangled right into the flow"
+  Annotate "🔌 Database created inside the function — completely untestable"
   Sleep 2s
 
-  Highlight 23:1-27:1
+  Highlight 4:1-9:1
   Sleep 1s
-  Annotate "🗄️ Direct database and cache calls buried at the bottom. Bold choice."
+  Annotate "💥 Generic 'error' everywhere — good luck debugging production"
   Sleep 2.5s
 }
 
-Annotate "✂️ Time to refactor — let's split this monster into clean modules!"
+Annotate "✂️ Time to refactor — step by step!"
 
 Sleep 1.5s
 
-# ── Scene 2: extract pure types ────────────────────────────────────────────
+# ── Scene 2: define the types ──────────────────────────────────────────────
 
 File "user.types.ts" {
-  Annotate "💎 Step 1 — extract pure data types"
+  Annotate "💎 Step 1 — define types and the repository contract"
   Sleep 1s
 
   Type "export interface User {"
@@ -111,92 +108,89 @@ File "user.types.ts" {
   Type "}"
   Enter
   Enter
-  Type "export type NewUser = Omit<User, 'id' | 'createdAt'>;"
+  Type "export type CreateUserInput = Omit<User, 'id' | 'createdAt'>;"
+  Enter
+  Enter
+  Type "export interface UserRepository {"
+  Enter
+  Type "save(input: CreateUserInput): Promise<User>;"
+  Enter
+  Backspace 1
+  Type "}"
   Sleep 1s
 
-  Annotate "🧱 A pure data shape — no behavior, no surprises, no any"
+  Annotate "🧱 Explicit contracts — no any, no guessing, no surprises"
   Sleep 2.5s
 }
 
-# ── Scene 3: pure validation function ─────────────────────────────────────
+# ── Scene 3: zod validation schema ────────────────────────────────────────
 
-File "user.validator.ts" {
-  Annotate "✅ Step 2 — validation as a pure, testable function"
+File "user.schema.ts" {
+  Annotate "✅ Step 2 — validate inputs with zod"
   Sleep 1s
 
   Paste """
-import type { NewUser } from './user.types';
+import { z } from 'zod';
 
-export function validateUser(data: NewUser): void {
-  if (!data.name || data.name.length < 2)
-    throw new Error('Name must be at least 2 characters');
+export const createUserSchema = z.object({
+  name: z.string()
+    .min(2, 'Name must be at least 2 characters'),
+  email: z.string()
+    .email('Invalid email address'),
+  age: z.number()
+    .min(18, 'Must be at least 18 years old'),
+});
 
-  if (!data.email || !data.email.includes('@'))
-    throw new Error('Email must be a valid address');
-
-  if (data.age == null || data.age < 0 || data.age > 150)
-    throw new Error('Age must be between 0 and 150');
-}
+export type CreateUserInput =
+  z.infer<typeof createUserSchema>;
 """
   Sleep 1s
 
-  Annotate "🎯 One function, one responsibility — easy to test and reuse"
+  Annotate "🎯 Schema-first validation — runtime safety with descriptive errors"
   Sleep 2.5s
 }
 
-# ── Scene 4: the clean service (single pane) ──────────────────────────────
+# ── Scene 4: clean createUser with injected repository ────────────────────
 
 File "user.service.ts" {
-  Annotate "🚀 Step 3 — a clean service with explicit, typed dependencies"
+  Annotate "🚀 Step 3 — a clean function with an injected repository"
   Sleep 1s
 
-  Type "import type { User, NewUser } from './user.types';"
+  Type "import { createUserSchema } from './user.schema';"
   Enter
-  Type "import { validateUser } from './user.validator';"
+  Type "import type { CreateUserInput } from './user.schema';"
   Enter
-  Enter
-  Type "export class UserService {"
-  Enter
-  Type "constructor("
-  Enter
-  Type "private readonly db: Database,"
-  Enter
-  Type "private readonly cache: Cache,"
-  Enter
-  Backspace 1
-  Type ") {}"
+  Type "import type { User, UserRepository } from './user.types';"
   Enter
   Enter
-  Type "async createUser(data: NewUser): Promise<User> {"
+  Type "export async function createUser("
   Enter
-  Type "validateUser(data);"
+  Type "input: CreateUserInput,"
   Enter
-  Type "const user = await this.db.insert(normalize(data));"
-  Enter
-  Type "await this.cache.set(`user:${user.id}`, user, 3600);"
-  Enter
-  Type "return user;"
+  Type "repo: UserRepository"
   Enter
   Backspace 1
-  Type "}"
+  Type "): Promise<User> {"
+  Enter
+  Type "const data = createUserSchema.parse(input);"
+  Enter
+  Type "return repo.save(data);"
   Enter
   Backspace 1
   Type "}"
   Sleep 1s
 
-  Annotate "🏆 Typed, composed, dependency-injected — and actually readable!"
+  Annotate "🏆 Typed, testable, and eleven lines — repo is a parameter, not a secret"
   Sleep 2.5s
 }
 
 # ── Scene 5: side-by-side comparison ──────────────────────────────────────
-# Switch pane 0 back to the legacy file, then split and open the new
-# service on the right so both are visible at the same time.
 
 Annotate "👀 Let's put them side by side and compare"
 
 Sleep 1.5s
 
-File "user-service.ts" {
+File "create-user.ts" {
   Sleep 0.5s
 }
 
@@ -206,11 +200,11 @@ File "user.service.ts" {
   Sleep 0.5s
 }
 
-Annotate "😬 Left: before — 30 lines, 3 responsibilities, 0 types"
+Annotate "😬 Left: before — any types, hidden deps, generic errors"
 
 Sleep 3s
 
-Annotate "✨ Right: after — typed, composed, and each file does one thing"
+Annotate "✨ Right: after — typed, validated with zod, repo injected"
 
 Sleep 3s
 
