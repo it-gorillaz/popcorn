@@ -27,8 +27,14 @@ jobs:
       - name: Update npm
         run: npm install -g npm@latest
 
-      - name: Install dependencies and build
-        run: npm install
+      - name: Install dependencies
+        run: npm install --ignore-scripts
+
+      - name: Build artifacts
+        run: npm run prepare
+
+      - name: Remove prepare script
+        run: npm pkg delete scripts.prepare
 
       - name: Get version
         id: package
