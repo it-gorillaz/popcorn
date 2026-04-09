@@ -1,0 +1,37 @@
+# Development config
+.prettierrc
+eslint.config.js
+
+# CI/CD
+.github/
+
+# Docker
+Dockerfile
+.dockerignore
+
+# Shell scripts
+*.sh
+
+# Examples
+examples/
+
+# Tests
+tests/
+
+# Build scripts
+scripts/
+
+# Coverage
+coverage/
+*.lcov
+.nyc_output/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Misc
+.env
+.env.*
+.eslintcache
+.stylelintcache
