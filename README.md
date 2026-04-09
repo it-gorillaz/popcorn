@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="examples/popcorn.png" width="250"/>
+  <img src="popcorn.png" width="250"/>
 </p>
 <p align="center" style="font-size: 32px;"><b>popcorn</b></p>
 <p align="center"><b>Script code, render cinema, grab your popcorn 🍿🎬</b></p>
@@ -10,28 +10,68 @@
 
 Perfect for tutorial clips, conference demos, social content, and anything else where a live-coding screencast would be too risky or too tedious to record in one take.
 
-![demo](examples/full-demo/demo.gif)
+![demo](demo.gif)
 
 <p><sub>Generated with popcorn — see the <a href="examples/full-demo">full-demo example</a>.</sub></p>
 
 ---
 
-## Installation
+## Getting Started
+
+### With npx
+
+The quickest way to use popcorn — no cloning required. Install the Playwright Chromium browser once, then run any scene:
 
 ```bash
-npm install
+# One-time setup: install the Chromium browser used for rendering
+npx playwright install chromium
+
+# Render a scene
+npx @itgorillaz/popcorn render scene.pop
+npx @itgorillaz/popcorn render scene.pop -f gif
+npx @itgorillaz/popcorn render scene.pop -f mp4 -o /path/to/output.mp4
 ```
 
-> The `prepare` script automatically compiles the PEG grammar (`src/parser/grammar.pegjs → src/parser/parser.js`) and bundles vendor assets.
+> FFmpeg is bundled via `ffmpeg-static` — no separate FFmpeg installation needed.
 
-### Zero-install via Docker
+---
 
-A pre-built Docker image is available so you don't need Node.js or FFmpeg locally. Use the included wrapper script, which mounts your current directory as `/workspace` inside the container:
+### Via Docker
+
+A pre-built Docker image is available so you don't need Node.js, FFmpeg, or a Chromium install locally. Use the included wrapper script, which mounts your current directory as `/workspace` inside the container:
 
 ```bash
 ./popcorn.sh render scene.pop
 ./popcorn.sh render scene.pop -f gif
 ./popcorn.sh render scene.pop -f mp4 -o /path/to/output.mp4
+```
+
+---
+
+### Run Locally
+
+Clone the repository, install dependencies, and install the Chromium browser:
+
+```bash
+git clone https://github.com/it-gorillaz/popcorn.git
+cd popcorn
+npm install
+npx playwright install chromium
+```
+
+> `npm install` automatically runs the `prepare` script, which compiles the PEG grammar and bundles vendor assets (Monaco editor and themes).
+
+Then run scenes directly:
+
+```bash
+node bin/popcorn.js render scene.pop
+```
+
+Or link it globally and use the `popcorn` command:
+
+```bash
+npm link
+popcorn render scene.pop
 ```
 
 ---
