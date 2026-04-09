@@ -1,33 +1,7 @@
 {
-  "name": "popcorn",
-  "version": "0.1.0",
-  "description": "Script code, render cinema, grab your popcorn.",
-  "type": "module",
+  "author": "tommelo",
   "bin": {
     "popcorn": "./bin/popcorn.js"
-  },
-  "scripts": {
-    "build:parser": "peggy --format es src/parser/grammar.pegjs -o src/parser/parser.js",
-    "build:vendor": "node scripts/build-vendor.js",
-    "prepare": "npm run build:parser && npm run build:vendor",
-    "test": "vitest run",
-    "test:watch": "vitest",
-    "lint": "eslint src",
-    "lint:fix": "eslint src --fix",
-    "format": "prettier --write src",
-    "format:check": "prettier --check src"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "MIT",
-  "devDependencies": {
-    "@eslint/js": "^10.0.1",
-    "eslint": "^10.1.0",
-    "eslint-config-prettier": "^10.1.8",
-    "globals": "^17.4.0",
-    "peggy": "^5.1.0",
-    "prettier": "^3.8.1",
-    "vitest": "^4.1.2"
   },
   "dependencies": {
     "chalk": "^5.6.2",
@@ -39,5 +13,54 @@
     "monaco-themes": "^0.4.8",
     "ora": "^9.3.0",
     "playwright": "^1.59.1"
-  }
+  },
+  "description": "Script code, render cinema, grab your popcorn.",
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.1.0",
+    "eslint-config-prettier": "^10.1.8",
+    "globals": "^17.4.0",
+    "peggy": "^5.1.0",
+    "prettier": "^3.8.1",
+    "vitest": "^4.1.2"
+  },
+  "homepage": "https://github.com/it-gorillaz/popcorn#readme",
+  "keywords": [
+    "cli",
+    "code",
+    "animation",
+    "video",
+    "screencast",
+    "code-animation",
+    "code-video",
+    "code-renderer",
+    "syntax-highlighting",
+    "monaco-editor",
+    "ffmpeg",
+    "playwright",
+    "developer-tools",
+    "terminal",
+    "scene",
+    "scripting"
+  ],
+  "license": "MIT",
+  "name": "popcorn",
+  "private": false,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/it-gorillaz/popcorn.git"
+  },
+  "scripts": {
+    "build:parser": "peggy --format es src/parser/grammar.pegjs -o src/parser/parser.js",
+    "build:vendor": "node scripts/build-vendor.js",
+    "format": "prettier --write src",
+    "format:check": "prettier --check src",
+    "lint": "eslint src",
+    "lint:fix": "eslint src --fix",
+    "prepare": "npm run build:parser && npm run build:vendor",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "type": "module",
+  "version": "0.0.1"
 }
