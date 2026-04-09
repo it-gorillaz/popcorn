@@ -1,0 +1,44 @@
+name: Publish to NPM
+
+on:
+  release:
+    types:
+      - created
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
+          registry-url: 'https://registry.npmjs.org'
+          always-auth: true
+          scope: '@itgorillaz'
+
+      - name: Update npm
+        run: npm install -g npm@latest
+
+      - name: Install dependencies
+        run: npm install --ignore-scripts
+
+      - name: Build artifacts
+        run: npm run prepare
+
+      - name: Remove prepare script
+        run: npm pkg delete scripts.prepare
+
+      - name: Get version
+        id: package
+        run: echo "version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
+
+      - name: Publish package on NPM
+        run: npm publish --provenance --access public ${{ contains(steps.package.outputs.version, '-') && '--tag next' || '' }}

@@ -44,7 +44,7 @@
     "scripting"
   ],
   "license": "MIT",
-  "name": "popcorn",
+  "name": "@itgorillaz/popcorn",
   "private": false,
   "repository": {
     "type": "git",
