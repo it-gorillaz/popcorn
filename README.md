@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="popcorn.png" width="250"/>
+  <img src="https://raw.githubusercontent.com/it-gorillaz/popcorn/master/popcorn.png" width="250"/>
 </p>
 <p align="center" style="font-size: 32px;"><b>popcorn</b></p>
 <p align="center"><b>Script code, render cinema, grab your popcorn 🍿🎬</b></p>
@@ -10,7 +10,7 @@
 
 Perfect for tutorial clips, conference demos, social content, and anything else where a live-coding screencast would be too risky or too tedious to record in one take.
 
-![demo](demo.gif)
+![demo](https://raw.githubusercontent.com/it-gorillaz/popcorn/master/demo.gif)
 
 <p><sub>Generated with popcorn — see the <a href="examples/full-demo">full-demo example</a>.</sub></p>
 
