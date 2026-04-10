@@ -9,7 +9,7 @@
     "commander": "^14.0.3",
     "execa": "^9.6.1",
     "ffmpeg-static": "^5.3.0",
-    "monaco-editor": "^0.52.2",
+    "monaco-editor": "^0.55.1",
     "monaco-themes": "^0.4.8",
     "ora": "^9.3.0",
     "playwright": "^1.59.1"
@@ -17,12 +17,12 @@
   "description": "Script code, render cinema, grab your popcorn.",
   "devDependencies": {
     "@eslint/js": "^10.0.1",
-    "eslint": "^10.1.0",
+    "eslint": "^10.2.0",
     "eslint-config-prettier": "^10.1.8",
     "globals": "^17.4.0",
     "peggy": "^5.1.0",
     "prettier": "^3.8.1",
-    "vitest": "^4.1.2"
+    "vitest": "^4.1.4"
   },
   "homepage": "https://github.com/it-gorillaz/popcorn#readme",
   "keywords": [
