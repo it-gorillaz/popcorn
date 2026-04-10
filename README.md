@@ -38,12 +38,10 @@ npx @itgorillaz/popcorn render scene.pop -f mp4 -o /path/to/output.mp4
 
 ### Via Docker
 
-A pre-built Docker image is available so you don't need Node.js, FFmpeg, or a Chromium install locally. Use the included wrapper script, which mounts your current directory as `/workspace` inside the container:
+A pre-built Docker image is available so you don't need Node.js, FFmpeg, or a Chromium install locally. Mount your current directory as `/workspace` inside the container:
 
 ```bash
-./popcorn.sh render scene.pop
-./popcorn.sh render scene.pop -f gif
-./popcorn.sh render scene.pop -f mp4 -o /path/to/output.mp4
+docker run --rm -v "$(pwd)":/workspace itgorillaz/popcorn render /workspace/scene.pop -o /workspace/output.gif -f gif
 ```
 
 ---
