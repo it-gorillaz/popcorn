@@ -100,7 +100,7 @@ export async function renderCommand(sceneFile, opts) {
   encSpinner.start();
 
   try {
-    await compileVideo(framesDir, fps, format, finalOutput);
+    await compileVideo(framesDir, fps, format, finalOutput, width, height);
     encSpinner.succeed(chalk.green(`Encoded → ${finalOutput}`));
   } catch (err) {
     encSpinner.fail(chalk.red(`Encoding error: ${err.message}`));

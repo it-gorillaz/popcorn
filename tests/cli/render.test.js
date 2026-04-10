@@ -164,19 +164,19 @@ describe('renderCommand — option resolution', () => {
     it('uses mp4 by default when no CLI format is given', async () => {
       setupMocks();
       await renderCommand(SCENE, {});
-      expect(mockCompileVideo).toHaveBeenCalledWith(expect.any(String), 30, 'mp4', expect.stringMatching(/\.mp4$/));
+      expect(mockCompileVideo).toHaveBeenCalledWith(expect.any(String), 30, 'mp4', expect.stringMatching(/\.mp4$/), 1280, 720);
     });
 
     it('CLI --format overrides default format', async () => {
       setupMocks();
       await renderCommand(SCENE, { format: 'gif' });
-      expect(mockCompileVideo).toHaveBeenCalledWith(expect.any(String), 30, 'gif', expect.stringMatching(/\.gif$/));
+      expect(mockCompileVideo).toHaveBeenCalledWith(expect.any(String), 30, 'gif', expect.stringMatching(/\.gif$/), 1280, 720);
     });
 
     it('CLI --format webm passes webm to compileVideo', async () => {
       setupMocks();
       await renderCommand(SCENE, { format: 'webm' });
-      expect(mockCompileVideo).toHaveBeenCalledWith(expect.any(String), 30, 'webm', expect.any(String));
+      expect(mockCompileVideo).toHaveBeenCalledWith(expect.any(String), 30, 'webm', expect.any(String), 1280, 720);
     });
 
     it('CLI --format webm produces a .webm output path', async () => {
@@ -191,13 +191,13 @@ describe('renderCommand — option resolution', () => {
     it('uses 30 fps by default', async () => {
       setupMocks();
       await renderCommand(SCENE, {});
-      expect(mockCompileVideo).toHaveBeenCalledWith(expect.any(String), 30, 'mp4', expect.any(String));
+      expect(mockCompileVideo).toHaveBeenCalledWith(expect.any(String), 30, 'mp4', expect.any(String), 1280, 720);
     });
 
     it('uses fps from Config block', async () => {
       setupMocks({ fps: 60 });
       await renderCommand(SCENE, {});
-      expect(mockCompileVideo).toHaveBeenCalledWith(expect.any(String), 60, 'mp4', expect.any(String));
+      expect(mockCompileVideo).toHaveBeenCalledWith(expect.any(String), 60, 'mp4', expect.any(String), 1280, 720);
     });
   });
 
