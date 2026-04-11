@@ -41,4 +41,4 @@ jobs:
         run: echo "version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
 
       - name: Publish package on NPM
-        run: npm publish --provenance --access public ${{ contains(steps.package.outputs.version, '-') && '--tag next' || '' }}
+        run: npm publish --access public ${{ contains(steps.package.outputs.version, '-') && '--tag next' || '' }}
