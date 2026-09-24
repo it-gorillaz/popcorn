@@ -22,7 +22,7 @@
     "globals": "^17.4.0",
     "peggy": "^5.1.0",
     "prettier": "^3.8.1",
-    "vitest": "^4.1.4"
+    "vitest": "^5.0.1"
   },
   "homepage": "https://github.com/it-gorillaz/popcorn#readme",
   "keywords": [
